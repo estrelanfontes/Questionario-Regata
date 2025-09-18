@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Emissão de CO2</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Calculadora de Emissão de CO2 em Eventos Esportivos</h1>
+            <p>Descubra o impacto ambiental dos seus deslocamentos para eventos esportivos</p>
+        </header>
+        
+        <div class="hero">
+            <div class="hero-content">
+                <h2>Faça a diferença pelo planeta</h2>
+                <p>Nosso questionário ajuda você a calcular e entender suas emissões de carbono</p>
+                <a href="/questionario" class="btn-primary">Iniciar Questionário</a>
+            </div>
+        </div>
+        
+        <div class="info-cards">
+            <div class="card">
+                <h3>Por que calcular?</h3>
+                <p>O transporte é responsável por cerca de 24% das emissões globais de CO2. Suas escolhas fazem diferença!</p>
+            </div>
+            
+            <div class="card">
+                <h3>Como funciona?</h3>
+                <p>Responda algumas perguntas sobre seus deslocamentos e veja gráficos em tempo real</p>
+            </div>
+            
+            <div class="card">
+                <h3>Participe da mudança</h3>
+                <p>Seus dados ajudam a entender padrões e promover eventos mais sustentáveis</p>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Desenvolvido para promover a conscientização ambiental em eventos esportivos</p>
+        </footer>
+    </div>
+</body>
+</html>

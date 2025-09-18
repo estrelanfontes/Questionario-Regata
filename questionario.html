@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Questionário - Emissão de CO2</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Questionário de Emissão de CO2</h1>
+            <p>Preencha as informações sobre seus deslocamentos para o evento esportivo</p>
+        </header>
+        
+        <form action="/submit" method="post" class="questionario-form">
+            <div class="form-section">
+                <h2>Informações Pessoais</h2>
+                
+                <div class="form-group">
+                    <label for="nome">Nome:</label>
+                    <input type="text" id="nome" name="nome" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="tipo_participante">Você é:</label>
+                    <select id="tipo_participante" name="tipo_participante" required>
+                        <option value="">Selecione...</option>
+                        <option value="Atleta">Atleta</option>
+                        <option value="Organização">Organização/Staff</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <h2>Transporte Principal até o Evento</h2>
+                
+                <div class="form-group">
+                    <label for="transporte_principal">Meio de transporte:</label>
+                    <select id="transporte_principal" name="transporte_principal" required>
+                        <option value="">Selecione...</option>
+                        {% for transporte in transportes %}
+                        <option value="{{ transporte }}">{{ transporte.capitalize() }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="distancia_principal">Distância percorrida (km):</label>
+                    <input type="number" id="distancia_principal" name="distancia_principal" min="0" step="0.1" required>
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <h2>Transporte Local durante o Evento</h2>
+                
+                <div class="form-group">
+                    <label for="transporte_local">Meio de transporte local:</label>
+                    <select id="transporte_local" name="transporte_local" required>
+                        <option value="">Selecione...</option>
+                        {% for transporte in transportes %}
+                        <option value="{{ transporte }}">{{ transporte.capitalize() }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="distancia_local">Distância média diária (km):</label>
+                    <input type="number" id="distancia_local" name="distancia_local" min="0" step="0.1" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="dias_evento">Duração do evento (dias):</label>
+                    <input type="number" id="dias_evento" name="dias_evento" min="1" required>
+                </div>
+            </div>
+            
+            <div class="form-actions">
+                <button type="submit" class="btn-primary">Calcular Emissão</button>
+            </div>
+        </form>
+        
+        <footer>
+            <a href="/">Voltar para a página inicial</a>
+        </footer>
+    </div>
+</body>
+</html>

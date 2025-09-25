@@ -37,12 +37,12 @@
                 </div>
             </div>
             
-            <div class="form-section">
-                <h2>Transporte Principal até o Evento</h2>
+            <div class="form-section"><!-- ATUALIZADO -->
+                <h2>Transporte até a Cidade do Evento</h2> 
                 
                 <div class="form-group">
-                    <label for="transporte_principal">Meio de transporte:</label>
-                    <select id="transporte_principal" name="transporte_principal" required>
+                    <label for="transporte_cidade">Meio de transporte:</label>
+                    <select id="transporte_cidade" name="transporte_cidade" required>
                         <option value="">Selecione...</option>
                         {% for transporte in transportes %}
                         <option value="{{ transporte }}">{{ transporte.capitalize() }}</option>
@@ -51,8 +51,8 @@
                 </div>
                 
                 <div class="form-group">
-                    <label for="distancia_principal">Distância percorrida (km):</label>
-                    <input type="number" id="distancia_principal" name="distancia_principal" min="0" step="0.1" required>
+                    <label for="distancia_cidade">Distância percorrida (km):</label>
+                    <input type="number" id="distancia_cidade" name="distancia_cidade" min="0" step="0.1" required>
                 </div>
             </div>
             

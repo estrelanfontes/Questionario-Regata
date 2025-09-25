@@ -27,7 +27,7 @@
                     <ul>
                         <li><strong>Nome:</strong> {{ registro.nome }}</li>
                         <li><strong>Tipo:</strong> {{ registro.tipo_participante }}</li>
-                        <li><strong>Transporte principal:</strong> {{ registro.transporte_principal }} ({{ registro.distancia_principal }} km)</li>
+                        <li><strong>Transporte até a cidade:</strong> {{ registro.transporte_cidade }} ({{ registro.distancia_cidade }} km)</li>
                         <li><strong>Transporte local:</strong> {{ registro.transporte_local }} ({{ registro.distancia_local }} km/dia)</li>
                         <li><strong>Dias de evento:</strong> {{ registro.dias_evento }}</li>
                         <li><strong>Data:</strong> {{ registro.data }}</li>
@@ -65,7 +65,7 @@
             </div>
             {% endif %}
         </div>
-        
+
         <div class="actions">
             <a href="/questionario" class="btn-primary">Realizar Novo Cálculo</a>
             <a href="/" class="btn-secondary">Página Inicial</a>

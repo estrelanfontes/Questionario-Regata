@@ -31,8 +31,8 @@ EMISSOES_TRANSPORTE = {
     "avião": 4.3,
     "barca": 5.9,
     "bicicleta": 0,
-    "moto": 7.5,
-    "trem": 2.8,
+    "moto": 8.05,
+    "trem": 2.1,
     "outros": 5.0
 }
 
@@ -46,6 +46,21 @@ TIPOS_PARTICIPANTE = [
     "Organização",
     "Outro"
 ]
+
+# Lista de estados brasileiros + opção para estrangeiros
+ESTADOS_BRASIL = [
+    # Estados brasileiros
+    "Acre", "Alagoas", "Amapá", "Amazonas", "Bahia", "Ceará", 
+    "Distrito Federal", "Espírito Santo", "Goiás", "Maranhão", 
+    "Mato Grosso", "Mato Grosso do Sul", "Minas Gerais", "Pará", 
+    "Paraíba", "Paraná", "Pernambuco", "Piauí", "Rio de Janeiro", 
+    "Rio Grande do Norte", "Rio Grande do Sul", "Rondônia", "Roraima", 
+    "Santa Catarina", "São Paulo", "Sergipe", "Tocantins",
+    
+    # Opção para estrangeiros
+    "Não se aplica (estrangeiro)"
+]
+
 
 # Carregar dados existentes
 def carregar_dados():
@@ -207,7 +222,7 @@ def gerar_pdf(registro):
             leftMargin=72,
             topMargin=72, 
             bottomMargin=18,
-            title=f"Emissão CO2 - {registro['nome']}"
+            title=f"Emissão CO2 - {registro['email']}"
         )
         
         # Container para os elementos do PDF
@@ -249,7 +264,7 @@ def gerar_pdf(registro):
         )
 
         # ===== CABEÇALHO =====
-        titulo = Paragraph("CERTIFICADO DE EMISSÃO DE CARBONO", estilo_titulo)
+        titulo = Paragraph("Cada Deslocamento Conta: Seu Impacto em CO2 no Evento", estilo_titulo)
         elements.append(titulo)
         
         linha_divisoria = Table([[""]], colWidths=[16*cm], rowHeights=[1])
@@ -264,9 +279,11 @@ def gerar_pdf(registro):
         elements.append(Paragraph("DADOS DO PARTICIPANTE", estilo_subtitulo))
         
         dados_pessoais = [
-            ["Nome:", registro['nome']],
-            ["Email:", registro['email']],
+            ["Local de Origem:", 
+            "Estrangeiro" if registro.get('estado_origem') == "Não se aplica (estrangeiro)" 
+            else registro.get('estado_origem', 'Não informado')],
             ["Tipo de Participante:", registro['tipo_participante']],
+            ["Email:", registro['email']],
             ["Data do Cálculo:", registro['data']]
         ]
         
@@ -339,13 +356,11 @@ def gerar_pdf(registro):
         elements.append(Paragraph("IMPACTO AMBIENTAL - EQUIVALÊNCIAS", estilo_subtitulo))
         
         arvores = registro['emissao_total'] / 21000  # 1 árvore absorve ~21kg CO2/ano
-        km_carro = registro['emissao_total'] / 130   # Carro médio emite ~130g CO2/km
         lâmpadas = registro['emissao_total'] / 450   # 1 lâmpada LED/dia
         
         comparativos = [
             ["Equivalência", "Valor Aproximado"],
             ["Árvores para absorver em 1 ano", f"{arvores:.2f} árvores"],
-            ["Quilômetros de carro médio", f"{km_carro:.1f} km"],
             ["Horas de lâmpada LED (60W)", f"{lâmpadas:.1f} horas"],
             ["Emissão diária média brasileira*", "≈ 12.000 gCO2"]
         ]
@@ -376,13 +391,14 @@ def gerar_pdf(registro):
         elements.append(Paragraph("RECOMENDAÇÕES PARA REDUZIR EMISSÕES", estilo_subtitulo))
         
         recomendacoes = [
-            "🌱 Prefira transportes públicos ou coletivos para deslocamentos",
-            "🚗 Organize caronas solidárias com outros participantes", 
-            "🚶 Para distâncias curtas, opte por caminhar ou usar bicicleta",
-            "🌳 Compense emissões participando de programas de reflorestamento",
-            "🏨 Escolha acomodações próximas ao local do evento",
-            "📅 Agende deslocamentos para evitar tráfego intenso",
-            "💡 Prefira veículos elétricos ou híbridos quando disponível"
+            "🏨 Escolha acomodações próximas ao local do evento,  reduzindo a necessidade de transporte motorizado",
+            "🚶 Para distâncias curtas, opte por caminhar ou pedalar, formas ativas e sustentáveis de locomoção que também favorecem a saúde e o bem-estar",
+            "🌱 Prefira transportes públicos ou coletivos para deslocamentos sempre que possível",
+            "🚗 Organize caronas solidárias com outros participantes, otimizando o uso dos veículos e diminuindo o número de deslocamentos individuais",
+            "📅 Planeje seus deslocamentos com antecedência para evitar horários de tráfego intenso e, consequentemente, o aumento do consumo de combustível",
+            "💡 Dê preferência a veículos elétricos ou híbridos, quando disponíveis, para minimizar o impacto ambiental dos deslocamentos", 
+            "🌳 Compense emissões participando de programas de reflorestamento ou outras iniciativas ambientais reconhecidas"
+        
         ]
         
         for rec in recomendacoes:
@@ -429,12 +445,11 @@ def gerar_pdf_simples(registro):
     p = canvas.Canvas(buffer, pagesize=A4)
     
     p.setFont("Helvetica-Bold", 16)
-    p.drawString(100, 800, "Certificado de Emissão de CO2")
+    p.drawString(100, 800, "Cada Deslocamento Conta: Seu Impacto em CO2 no Evento")
     
     p.setFont("Helvetica", 12)
-    p.drawString(100, 770, f"Participante: {registro['nome']}")
-    p.drawString(100, 750, f"Email: {registro['email']}")
-    p.drawString(100, 730, f"Tipo: {registro['tipo_participante']}")
+    p.drawString(100, 770, f"Email: {registro['email']}")
+    p.drawString(100, 750, f"Tipo: {registro['tipo_participante']}")
     
     p.setFont("Helvetica-Bold", 14)
     p.drawString(100, 700, f"Emissão Total: {registro['emissao_total']:.2f} gCO2")
@@ -458,12 +473,12 @@ def gerar_pdf_simples(registro):
 def index():
     return render_template('index.html')
 
-# NOVO: Passa a lista atualizada para o template
 @app.route('/questionario')
 def questionario():
     return render_template('questionario.html', 
                           transportes=EMISSOES_TRANSPORTE.keys(),
-                          tipos_participante=TIPOS_PARTICIPANTE)
+                          tipos_participante=TIPOS_PARTICIPANTE,
+                          estados_brasil=ESTADOS_BRASIL)  # NOVO
 
 @app.route('/submit', methods=['POST'])
 def submit():
@@ -489,8 +504,8 @@ def submit():
     
     # Criar registro - ATUALIZADO com nova categoria
     registro = {
-        "nome": dados_form['nome'],
         "email": dados_form['email'],
+        "estado_origem": dados_form['estado_origem'],
         "tipo_participante": tipo_participante,  # NOVA CATEGORIA
         "transporte_cidade": transporte_principal,
         "distancia_cidade": distancia_principal,
@@ -533,15 +548,15 @@ def download_dados():
     cw = csv.writer(si)
     
     # Escrever cabeçalho - ATUALIZADO
-    cw.writerow(['Nome', 'Email', 'Tipo Participante', 'Transporte até a Cidade', 
+    cw.writerow(['Email', 'Estado Origem', 'Tipo Participante', 'Transporte até a Cidade', 
                  'Distância até a Cidade (km)', 'Transporte Local', 'Distância Local (km)', 
                  'Dias de Evento', 'Emissão Total (gCO2)', 'Data'])
     
     # Escrever dados
     for resposta in dados["respostas"]:
         cw.writerow([
-            resposta['nome'],
             resposta['email'],
+            resposta.get('estado_origem', 'Não informado'),  
             resposta['tipo_participante'],  # NOVA CATEGORIA
             resposta['transporte_cidade'],
             resposta['distancia_cidade'],
@@ -587,7 +602,7 @@ def download_pdf(resposta_id):
             return send_file(
                 pdf_buffer,
                 as_attachment=True,
-                download_name=f"emissao_co2_{registro['nome'].replace(' ', '_')}_{registro['data'][:10]}.pdf",
+                download_name=f"emissao_co2_{registro['email'].split('@')[0]}_{registro['data'][:10]}.pdf",
                 mimetype='application/pdf'
             )
         except Exception as e:
@@ -607,7 +622,7 @@ def download_pdf_ultimo():
         return send_file(
             pdf_buffer,
             as_attachment=True,
-            download_name=f"emissao_co2_{registro['nome'].replace(' ', '_')}.pdf",
+            download_name=f"emissao_co2_{registro['email'].split('@')[0]}_{registro['data'][:10]}.pdf",
             mimetype='application/pdf'
         )
     else:
@@ -616,3 +631,4 @@ def download_pdf_ultimo():
 
 if __name__ == '__main__':
     app.run(debug=True)
+

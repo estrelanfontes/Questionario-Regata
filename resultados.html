@@ -25,7 +25,13 @@
                 <div class="detalhes-emissao">
                     <h3>Detalhes:</h3>
                     <ul>
-                        <li><strong>Nome:</strong> {{ registro.nome }}</li>
+                        <li><strong>Local de Origem:</strong> 
+                            {% if registro.estado_origem == "Não se aplica (estrangeiro)" %}
+                                Estrangeiro
+                            {% else %}
+                                {{ registro.estado_origem }}
+                            {% endif %}
+                        </li>
                         <li><strong>Tipo:</strong> {{ registro.tipo_participante }}</li>
                         <li><strong>Transporte até a cidade:</strong> {{ registro.transporte_cidade }} ({{ registro.distancia_cidade }} km)</li>
                         <li><strong>Transporte local:</strong> {{ registro.transporte_local }} ({{ registro.distancia_local }} km/dia)</li>

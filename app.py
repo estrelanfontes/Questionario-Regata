@@ -21,21 +21,31 @@ from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 
-# Configuração DIRETA (fallback se .env falhar)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///calculadora_co2.db'
+#Etapa Render
+database_url = os.environ.get('DATABASE_URL')
+if database_url:
+    # PRODUÇÃO (Render) - Converte postgres:// para postgresql:// se necessário
+    if database_url.startswith('postgres://'):
+        database_url = database_url.replace('postgres://', 'postgresql://', 1)
+    app.config['SQLALCHEMY_DATABASE_URI'] = database_url
+    print(f"✅ Usando PostgreSQL: {database_url.split('@')[1] if '@' in database_url else database_url}")
+else:
+    # DESENVOLVIMENTO (Local) - Tenta .env, depois fallback para SQLite
+    try:
+        from dotenv import load_dotenv
+        load_dotenv()
+        env_db_url = os.environ.get('DATABASE_URL')
+        if env_db_url:
+            app.config['SQLALCHEMY_DATABASE_URI'] = env_db_url
+            print("✅ .env carregado com sucesso")
+        else:
+            app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///calculadora_co2.db'
+            print("✅ Usando SQLite (fallback)")
+    except Exception as e:
+        app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///calculadora_co2.db'
+        print(f"⚠️  Erro .env: {e}, usando SQLite")
+
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-# Tenta carregar .env, mas não quebra se falhar
-try:
-    from dotenv import load_dotenv
-    load_dotenv()
-    if os.environ.get('DATABASE_URL'):
-        app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
-        print("✅ .env carregado com sucesso")
-except Exception as e:
-    print(f"⚠️  Aviso .env: {e}")
-    print("✅ Continuando com configuração padrão")
-
 db = SQLAlchemy(app)
 
 # SEU MODELO ORIGINAL (mantenha igual)
@@ -617,4 +627,5 @@ def init_database():
 if __name__ == '__main__':
     init_database()
     print("🚀 Servidor iniciando em http://127.0.0.1:5000")
+
     app.run(debug=True)

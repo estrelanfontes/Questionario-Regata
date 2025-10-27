@@ -1,8 +1,9 @@
+https://files.pythonhosted.org/packages/51/60/3f4c6fa87e88382e6ff7a8f0348f9f9094d72d71e0b1e2bfdad88f35c80e/numpy-1.24.3-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
 Flask==2.3.3
 Flask-SQLAlchemy==3.0.5
 python-dotenv==1.0.0
 matplotlib==3.7.2
-numpy==1.24.3
 reportlab==4.0.4
 psycopg2-binary==2.9.7
 gunicorn==21.2.0
+setuptools==68.2.2

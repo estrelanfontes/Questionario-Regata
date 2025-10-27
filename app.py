@@ -2,7 +2,6 @@ import os
 from flask import Flask, render_template, request, jsonify, send_file
 from datetime import datetime
 import matplotlib.pyplot as plt
-import numpy as np
 from io import BytesIO
 import base64
 from flask import make_response
@@ -47,7 +46,6 @@ else:
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
-
 # SEU MODELO ORIGINAL (mantenha igual)
 class RespostaEmissao(db.Model):
     __tablename__ = 'respostas_emissao'
@@ -143,7 +141,9 @@ def gerar_grafico_base64():
         valores_transp = [emissoes_transporte[t] for t in transportes_validos]
         
         if transportes_validos and any(valores_transp):
-            cores1 = plt.cm.Set3(np.linspace(0, 1, len(transportes_validos)))
+    # Cores manualmente distribuídas
+            num_cores = len(transportes_validos)
+            cores1 = [plt.cm.Set3(i / max(num_cores, 1)) for i in range(num_cores)]
             ax1.pie(valores_transp, labels=transportes_validos, autopct='%1.1f%%', colors=cores1)
             ax1.set_title("Distribuição de Emissões por Tipo de Transporte")
         
@@ -152,7 +152,8 @@ def gerar_grafico_base64():
         valores_tipos = [emissoes_tipo[t] for t in tipos_validos]
         
         if tipos_validos:
-            cores2 = plt.cm.viridis(np.linspace(0, 1, len(tipos_validos)))
+            num_cores = len(tipos_validos)
+            cores2 = [plt.cm.viridis(i / max(num_cores, 1)) for i in range(num_cores)]
             bars = ax2.bar(tipos_validos, valores_tipos, color=cores2)
             ax2.set_title("Emissões por Tipo de Participante")
             ax2.set_ylabel("Emissão de CO2 (g)")
@@ -627,5 +628,5 @@ def init_database():
 if __name__ == '__main__':
     init_database()
     print("🚀 Servidor iniciando em http://127.0.0.1:5000")
-
     app.run(debug=True)
+

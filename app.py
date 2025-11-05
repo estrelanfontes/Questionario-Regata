@@ -84,7 +84,7 @@ EMISSOES_TRANSPORTE = {
     "ônibus": 67,
     "avião": 43,
     "barca": 59,
-    "bicicleta": 0,
+    "bicicleta/a pé": 0,
     "moto": 80.5,
     "trem": 21,
     "outros": 50
@@ -629,4 +629,5 @@ if __name__ == '__main__':
     init_database()
     print("🚀 Servidor iniciando em http://127.0.0.1:5000")
     app.run(debug=True)
+
 

@@ -3,112 +3,208 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Questionário - Emissão de CO2</title>
+    <title>{{ get_translations('Questionário - Emissão de CO2').pt }} | {{ get_translations('Questionnaire - CO2 Emissions').en }}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>Questionário de Emissão de CO2</h1>
-            <p>Preencha as informações sobre seus deslocamentos para o evento esportivo</p>
+            <div class="text-block">
+                <h1>{{ get_translations('Questionário de Emissão de CO2').pt }}
+                    <span class="en">{{ get_translations('Questionário de Emissão de CO2').en }}</span>
+                </h1>
+            </div>
+            <div class="text-block">
+                <p>{{ get_translations('Preencha as informações sobre seus deslocamentos para o evento esportivo').pt }}
+                    <span class="en">{{ get_translations('Preencha as informações sobre seus deslocamentos para o evento esportivo').en }}</span>
+                </p>
+            </div>
         </header>
         
         <form action="/submit" method="post" class="questionario-form">
             <div class="form-section">
-                <h2>Informações Pessoais</h2>
+                <div class="text-block">
+                    <h2>{{ get_translations('Informações Pessoais').pt }}
+                        <span class="en">{{ get_translations('Informações Pessoais').en }}</span>
+                    </h2>
+                </div>
                 
                 <!-- CAMPO ATUALIZADO: Estado de origem -->
                 <div class="form-group">
-                    <label for="estado_origem">Estado de Origem:</label>
+                    <div class="text-block">
+                        <label for="estado_origem">{{ get_translations('Estado de Origem:').pt }}
+                            <span class="en">{{ get_translations('Estado de Origem:').en }}</span>
+                        </label>
+                    </div>
                     <select id="estado_origem" name="estado_origem" required>
-                        <option value="">Selecione seu estado de origem</option>
+                        <option value="">{{ get_translations('Selecione seu estado de origem').pt }}
+                            <span class="en">{{ get_translations('Selecione seu estado de origem').en }}</span>
+                        </option>
                         {% for estado in estados_brasil %}
                             {% if estado == "Não se aplica (estrangeiro)" %}
                                 <option value="{{ estado }}" style="font-style: italic; color: #666;">
                                     {{ estado }}
+                                    <span class="en">{{ get_translations('Não se aplica (estrangeiro)').en }}</span>
                                 </option>
                             {% else %}
                                 <option value="{{ estado }}">{{ estado }}</option>
                             {% endif %}
                         {% endfor %}
                     </select>
-                    <small style="color: #666; font-size: 0.9em;">
-                        Selecione "Não se aplica" caso seja de outro país
-                    </small>
+                    <div class="text-block">
+                        <small style="color: #666; font-size: 0.9em;">
+                            {{ get_translations("Selecione 'Não se aplica' caso seja de outro país").pt }}
+                            <span class="en">{{ get_translations("Selecione 'Não se aplica' caso seja de outro país").en }}</span>
+                        </small>
+                    </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="tipo_participante">Tipo de Participante: </label>
+                    <div class="text-block">
+                        <label for="tipo_participante">{{ get_translations('Tipo de Participante:').pt }}
+                            <span class="en">{{ get_translations('Tipo de Participante:').en }}</span>
+                        </label>
+                    </div>
                     <select class="form-control" id="tipo_participante" name="tipo_participante" required>
-                        <option value="">Selecione seu tipo de participação</option>
-                        <option value="Velejador/Velejadora">Velejador/Velejadora</option>
-                        <option value="Técnico/Técnica">Técnico/Técnica</option>
-                        <option value="Acompanhante do atleta">Acompanhante do atleta</option>
-                        <option value="Comissão de regata">Comissão de regata</option>
-                        <option value="Prestador/Prestadora de serviço">Prestador/Prestadora de serviço</option>
-                        <option value="Organização">Organização</option>
-                        <option value="Outro">Outro</option>
+                        <option value="">{{ get_translations('Selecione seu tipo de participação').pt }}
+                            <span class="en">{{ get_translations('Selecione seu tipo de participação').en }}</span>
+                        </option>
+                        <option value="Velejador/Velejadora">{{ get_translations('Velejador/Velejadora').pt }}
+                            <span class="en">{{ get_translations('Velejador/Velejadora').en }}</span>
+                        </option>
+                        <option value="Técnico/Técnica">{{ get_translations('Técnico/Técnica').pt }}
+                            <span class="en">{{ get_translations('Técnico/Técnica').en }}</span>
+                        </option>
+                        <option value="Acompanhante do atleta">{{ get_translations('Acompanhante do atleta').pt }}
+                            <span class="en">{{ get_translations('Acompanhante do atleta').en }}</span>
+                        </option>
+                        <option value="Comissão de regata">{{ get_translations('Comissão de regata').pt }}
+                            <span class="en">{{ get_translations('Comissão de regata').en }}</span>
+                        </option>
+                        <option value="Prestador/Prestadora de serviço">{{ get_translations('Prestador/Prestadora de serviço').pt }}
+                            <span class="en">{{ get_translations('Prestador/Prestadora de serviço').en }}</span>
+                        </option>
+                        <option value="Organização">{{ get_translations('Organização').pt }}
+                            <span class="en">{{ get_translations('Organização').en }}</span>
+                        </option>
+                        <option value="Outro">{{ get_translations('Outro').pt }}
+                            <span class="en">{{ get_translations('Outro').en }}</span>
+                        </option>
                     </select>
                 </div>
 
                 <div class="form-group">
-                    <label for="email">Email:</label>
+                    <div class="text-block">
+                        <label for="email">{{ get_translations('Email:').pt }}
+                            <span class="en">{{ get_translations('Email:').en }}</span>
+                        </label>
+                    </div>
                     <input type="email" id="email" name="email" required>
                 </div>
             </div>
             
-            <div class="form-section"><!-- ATUALIZADO -->
-                <h2>Deslocamento da sua residência até o local de hospedagem durante a participação no evento</h2> 
-                <h3>(Caso você resida nas proximidades do evento e não tenha realizado viagem, selecione “Outros” e insira “zero” na distância percorrida.)</h3>
+            <div class="form-section">
+                <div class="text-block">
+                    <h2>{{ get_translations('Deslocamento da sua residência até o local de hospedagem durante a participação no evento').pt }}
+                        <span class="en">{{ get_translations('Deslocamento da sua residência até o local de hospedagem durante a participação no evento').en }}</span>
+                    </h2>
+                </div>
+                <div class="text-block">
+                    <h3>{{ get_translations("(Caso você resida nas proximidades do evento e não tenha realizado viagem, selecione 'Outros' e insira 'zero' na distância percorrida.)").pt }}
+                        <span class="en">{{ get_translations("(Caso você resida nas proximidades do evento e não tenha realizado viagem, selecione 'Outros' e insira 'zero' na distância percorrida.)").en }}</span>
+                    </h3>
+                </div>
 
                 <div class="form-group">
                     <br>
-                    <label for="transporte_cidade">Principal meio de transporte utilizado:</label>
+                    <div class="text-block">
+                        <label for="transporte_cidade">{{ get_translations('Principal meio de transporte utilizado:').pt }}
+                            <span class="en">{{ get_translations('Principal meio de transporte utilizado:').en }}</span>
+                        </label>
+                    </div>
                     <select id="transporte_cidade" name="transporte_cidade" required>
-                        <option value="">Selecione...</option>
+                        <option value="">{{ get_translations('Selecione...').pt }}
+                            <span class="en">{{ get_translations('Selecione...').en }}</span>
+                        </option>
                         {% for transporte in transportes %}
-                        <option value="{{ transporte }}">{{ transporte.capitalize() }}</option>
+                        <option value="{{ transporte }}">
+                            {{ get_translations(transporte.capitalize()).pt }}
+                            <span class="en">{{ get_translations(transporte).en }}</span>
+                        </option>
                         {% endfor %}
                     </select>
                 </div>
                 
                 <div class="form-group">
-                    <label for="distancia_cidade">Distância média total percorrida (ida e volta, em km):</label>
+                    <div class="text-block">
+                        <label for="distancia_cidade">{{ get_translations('Distância média total percorrida (ida e volta, em km):').pt }}
+                            <span class="en">{{ get_translations('Distância média total percorrida (ida e volta, em km):').en }}</span>
+                        </label>
+                    </div>
                     <input type="number" id="distancia_cidade" name="distancia_cidade" min="0" step="0.1" required>
                 </div>
             </div>
             
             <div class="form-section">
-                <h2>Trajeto diário durante o evento (casa/hospedagem - clube - casa/hospedagem).</h2>
+                <div class="text-block">
+                    <h2>{{ get_translations('Trajeto diário durante o evento (casa/hospedagem - clube - casa/hospedagem).').pt }}
+                        <span class="en">{{ get_translations('Trajeto diário durante o evento (casa/hospedagem - clube - casa/hospedagem).').en }}</span>
+                    </h2>
+                </div>
                 
                 <div class="form-group">
-                    <label for="transporte_local">Principal meio de transporte utilizado:</label>
+                    <div class="text-block">
+                        <label for="transporte_local">{{ get_translations('Principal meio de transporte utilizado:').pt }}
+                            <span class="en">{{ get_translations('Principal meio de transporte utilizado:').en }}</span>
+                        </label>
+                    </div>
                     <select id="transporte_local" name="transporte_local" required>
-                        <option value="">Selecione...</option>
+                        <option value="">{{ get_translations('Selecione...').pt }}
+                            <span class="en">{{ get_translations('Selecione...').en }}</span>
+                        </option>
                         {% for transporte in transportes %}
-                        <option value="{{ transporte }}">{{ transporte.capitalize() }}</option>
+                        <option value="{{ transporte }}">
+                            {{ get_translations(transporte.capitalize()).pt }}
+                            <span class="en">{{ get_translations(transporte).en }}</span>
+                        </option>
                         {% endfor %}
                     </select>
                 </div>
                 
                 <div class="form-group">
-                    <label for="distancia_local">Distância média percorrida por dia (ida e volta, em km):</label>
+                    <div class="text-block">
+                        <label for="distancia_local">{{ get_translations('Distância média percorrida por dia (ida e volta, em km):').pt }}
+                            <span class="en">{{ get_translations('Distância média percorrida por dia (ida e volta, em km):').en }}</span>
+                        </label>
+                    </div>
                     <input type="number" id="distancia_local" name="distancia_local" min="0" step="0.1" required>
                 </div>
                 
                 <div class="form-group">
-                    <label for="dias_evento">Quantidade de dias em que realizou esse percurso: </label>
+                    <div class="text-block">
+                        <label for="dias_evento">{{ get_translations('Quantidade de dias em que realizou esse percurso:').pt }}
+                            <span class="en">{{ get_translations('Quantidade de dias em que realizou esse percurso:').en }}</span>
+                        </label>
+                    </div>
                     <input type="number" id="dias_evento" name="dias_evento" min="1" required>
                 </div>
             </div>
             
             <div class="form-actions">
-                <button type="submit" class="btn-primary">Calcular Emissão</button>
+                <div class="text-block">
+                    <button type="submit" class="btn-primary">{{ get_translations('Calcular Emissão').pt }}
+                        <span class="en">{{ get_translations('Calcular Emissão').en }}</span>
+                    </button>
+                </div>
             </div>
         </form>
         
         <footer>
-            <a href="/">Voltar para a página inicial</a>
+            <div class="text-block">
+                <a href="/">{{ get_translations('Voltar para a página inicial').pt }}
+                    <span class="en">{{ get_translations('Voltar para a página inicial').en }}</span>
+                </a>
+            </div>
         </footer>
     </div>
 </body>

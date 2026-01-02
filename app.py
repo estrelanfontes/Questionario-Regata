@@ -18,6 +18,193 @@ from reportlab.lib.units import cm, mm
 # Configuração ROBUSTA com fallback
 from flask_sqlalchemy import SQLAlchemy
 
+
+
+# Dicionário de traduções (adicionar após as outras constantes)
+# NO app.py, atualize o dicionário TRANSLATIONS:
+TRANSLATIONS = {
+
+        # Títulos do PDF
+    "DADOS DO PARTICIPANTE": "PARTICIPANT DATA",
+    "RESUMO DA EMISSÃO": "EMISSIONS SUMMARY", 
+    "IMPACTO AMBIENTAL - EQUIVALÊNCIAS": "ENVIRONMENTAL IMPACT - EQUIVALENCES",
+    "RECOMENDAÇÕES PARA REDUZIR EMISSÕES": "RECOMMENDATIONS TO REDUCE EMISSIONS",
+    
+    # Textos da tabela
+    "Tipo de Deslocamento": "Trip Type",
+    "Transporte": "Transport",
+    "Distância": "Distance",
+    "Emissão (gCO2)": "Emissions (gCO2)",
+    "Até a cidade do evento": "To the event city",
+    "Deslocamento local": "Local commute",
+    "TOTAL": "TOTAL",
+    
+    # Recomendações do PDF
+    "Escolha acomodações próximas ao local do evento, reduzindo a necessidade de transporte motorizado": 
+        "Choose accommodations close to the event venue, reducing the need for motorized transport",
+    "Para distâncias curtas, opte por caminhar ou pedalar, formas ativas e sustentáveis de locomoção que também favorecem a saúde e o bem-estar":
+        "For short distances, choose walking or cycling, active and sustainable forms of mobility that also promote health and well-being",
+    "Prefira transportes públicos ou coletivos para deslocamentos sempre que possível":
+        "Prefer public or collective transportation whenever possible",
+    "Organize caronas solidárias com outros participantes, otimizando o uso dos veículos e diminuindo o número de deslocamentos individuais":
+        "Organize carpooling with other participants, optimizing vehicle use and reducing the number of individual trips",
+    "Planeje seus deslocamentos com antecedência para evitar horários de tráfego intenso e, consequentemente, o aumento do consumo de combustível":
+        "Plan your trips in advance to avoid peak traffic times and consequently reduce fuel consumption",
+    "Dê preferência a veículos elétricos ou híbridos, quando disponíveis, para minimizar o impacto ambiental dos deslocamentos":
+        "Prefer electric or hybrid vehicles when available to minimize the environmental impact of travel",
+    "Compense emissões participando de programas de reflorestamento ou outras iniciativas ambientais reconhecidas":
+        "Compensate emissions by participating in reforestation programs or other recognized environmental initiatives",
+    
+    # Comparações ambientais
+    "Equivalência": "Equivalence",
+    "Valor Aproximado": "Approximate Value",
+    "Árvores para absorver em 1 ano": "Trees to absorb in 1 year",
+    "Horas de lâmpada LED (60W)": "Hours of LED bulb (60W)",
+    "Emissão diária média brasileira*": "Average daily Brazilian emission*",
+    "Baseado na média brasileira de 4.4 toneladas de CO2 per capita/ano": 
+        "Based on the Brazilian average of 4.4 tons of CO2 per capita/year",
+
+    # ========== MENU / TÍTULOS ==========
+    "Calculadora de Emissões de CO₂ em Deslocamentos para Eventos Náuticos": 
+        "CO₂ Emissions Calculator for Travel to Nautical Events",
+    "Faça a diferença pelo planeta": "Make a difference for the planet",
+    "Ao preencher o questionário, nossa calculadora conseguirá estimar suas emissões de carbono nos deslocamentos": 
+        "By filling out the questionnaire, our calculator can estimate your carbon emissions from travel",
+    "Iniciar Questionário": "Start Questionnaire",
+    
+    # ========== CARTÕES DA PÁGINA INICIAL ==========
+    "Por que calcular?": "Why calculate?",
+    "O transporte é responsável por cerca de 24% das emissões globais de CO2. Suas escolhas fazem diferença!": 
+        "Transportation accounts for about 24% of global CO2 emissions. Your choices matter!",
+    "Como funciona?": "How does it work?",
+    "Responda algumas perguntas sobre seus deslocamentos e veja gráficos em tempo real": 
+        "Answer some questions about your travel and see real-time graphs",
+    "Participe da mudança": "Join the change",
+    "Seus dados ajudam a entender padrões e promover eventos mais sustentáveis": 
+        "Your data helps understand patterns and promote more sustainable events",
+    
+    # ========== RODAPÉ ==========
+    "Uma iniciativa da parceria entre CBVela e ETTA/UFF com o apoio do CNPq e Faperj para promover a conscientização ambiental em eventos esportivos": 
+    "An initiative of the partnership between CBVela and ETTA/UFF with support from CNPq and Faperj to promote environmental awareness in sporting events",
+    
+    # ========== QUESTIONÁRIO (adicione estas) ==========
+    "Questionário - Emissão de CO2": "Questionnaire - CO2 Emissions",
+    "Preencha as informações sobre seus deslocamentos para o evento esportivo": 
+        "Fill in information about your travel to the sporting event",
+    "Informações Pessoais": "Personal Information",
+    "Estado de Origem:": "State of Origin:",
+    "Selecione seu estado de origem": "Select your state of origin",
+    "Selecione 'Não se aplica' caso seja de outro país": "Select 'Does not apply' if from another country",
+    "Tipo de Participante:": "Participant Type:",
+    "Selecione seu tipo de participação": "Select your participation type",
+    "Email:": "Email:",
+    
+    # ========== TIPOS DE TRANSPORTE ==========
+    "Carro": "--Car",
+    "Ônibus": "--Bus",
+    "Avião": "--Plane",
+    "Barca": "--Ferry",
+    "Bicicleta/A pé": "--Bicycle/Walking",
+    "Moto": "--Motorcycle",
+    "Trem": "--Train",
+    "Outros": "--Other",
+    
+    # ========== TIPOS DE PARTICIPANTE ==========
+    "Velejador/Velejadora": "--Sailor",
+    "Técnico/Técnica": "--Technician",
+    "Acompanhante do atleta": "--Athlete companion",
+    "Comissão de regata": "--Regatta committee",
+    "Prestador/Prestadora de serviço": "--Service provider",
+    "Organização": "--Organization",
+    "Outro": "--Other",
+    
+    # ========== SEÇÕES DO QUESTIONÁRIO ==========
+    "Deslocamento da sua residência até o local de hospedagem durante a participação no evento": 
+        "Travel from your residence to accommodation during event participation",
+    "(Caso você resida nas proximidades do evento e não tenha realizado viagem, selecione 'Outros' e insira 'zero' na distância percorrida.)": 
+        "(If you live near the event and did not travel, select 'Other' and enter 'zero' for distance traveled.)",
+    "Principal meio de transporte utilizado:": "Main transportation method used:",
+    "Selecione...": "Select...",
+    "Distância média total percorrida (ida e volta, em km):": 
+        "Average total distance traveled (round trip, in km):",
+    
+    "Trajeto diário durante o evento (casa/hospedagem - clube - casa/hospedagem).": 
+        "Daily commute during event (home/accommodation - club - home/accommodation)",
+    "Distância média percorrida por dia (ida e volta, em km):": 
+        "Average daily distance (round trip, in km):",
+    "Quantidade de dias em que realizou esse percurso:": 
+        "Number of days with this commute:",
+    
+    "Calcular Emissão": "Calculate Emissions",
+    "Voltar para a página inicial": "Back to home page",
+    
+    # ========== PÁGINA DE RESULTADOS ==========
+    "Resultados - Emissão de CO2": "Results - CO2 Emissions",
+    "Resultados da Sua Emissão de CO2": "Your CO2 Emissions Results",
+    "Veja o impacto ambiental dos seus deslocamentos": 
+        "See the environmental impact of your travel",
+    
+    "Resumo da Sua Emissão": "Your Emissions Summary",
+    "Total de emissões de carbono": "Total carbon emissions",
+    
+    "Detalhes:": "Details:",
+    "Local de Origem:": "Origin:",
+    "Tipo:": "Type:",
+    "Transporte até a cidade:": "Transport to city:",
+    "Transporte local:": "Local transport:",
+    "Dias de evento:": "Event days:",
+    "Data:": "Date:",
+    "Estrangeiro": "Foreign",
+    
+    "O que isso significa?": "What does this mean?",
+    "Sua emissão de": "Your emission of",
+    "g CO2 equivale a:": "g CO2 equals:",
+    "árvores absorvendo CO2 por um ano": "trees absorbing CO2 for one year",
+    
+    "Estatísticas Coletivas": "Collective Statistics",
+    "Gráficos atualizados com todas as respostas recebidas:": 
+        "Updated graphs with all received responses:",
+    
+    "Dicas para Reduzir Sua Emissão:": "Tips to Reduce Your Emissions:",
+    "Prefira transportes públicos sempre que possível": 
+        "Prefer public transportation whenever possible",
+    "Considere a carona solidária para eventos": 
+        "Consider carpooling for events",
+    "Para distâncias curtas, use bicicleta ou caminhe": 
+        "For short distances, use bicycle or walk",
+    "Compense suas emissões com programas de reflorestamento": 
+        "Compensate your emissions with reforestation programs",
+    
+    "Realizar Novo Cálculo": "Perform New Calculation",
+    "Página Inicial": "Home Page",
+    "Baixar Informações PDF": "Download PDF Report",
+    
+    "Juntos podemos promover eventos esportivos mais sustentáveis!": 
+        "Together we can promote more sustainable sporting events!",
+    
+    # ========== TEXTOS DO PDF ==========
+    "Cada Deslocamento Conta: Seu Impacto em CO2 no Evento": 
+    "Every Trip Counts: Your CO2 Impact at the Event",
+    "Relatório gerado automaticamente": "Report automatically generated",
+    "Calculadora de Emissões - Eventos Sustentáveis": 
+        "Emissions Calculator - Sustainable Events",
+
+
+    "Não se aplica (estrangeiro)": "Not applicable (foreign)"
+    
+}
+
+def get_translations(texto, translations_dict=TRANSLATIONS):
+    """Retorna um dicionário com ambas as línguas"""
+    return {
+        'pt': texto,  # Texto original em português
+        'en': translations_dict.get(texto, texto)  # Tradução em inglês
+    }
+
+def traduzir(texto, translations_dict=TRANSLATIONS):
+    """Função de compatibilidade para o código do PDF - retorna apenas inglês"""
+    return translations_dict.get(texto, texto)
+
 app = Flask(__name__)
 
 #Etapa Render
@@ -80,14 +267,14 @@ class RespostaEmissao(db.Model):
 
 # Dados de emissão por transporte (gCO2/km)
 EMISSOES_TRANSPORTE = {
-    "carro": 96.6,
-    "ônibus": 67,
-    "avião": 43,
-    "barca": 59,
-    "bicicleta/a pé": 0,
-    "moto": 80.5,
-    "trem": 21,
-    "outros": 50
+    "Carro": 96.6,
+    "Ônibus": 67,
+    "Avião": 43,
+    "Barca": 59,
+    "Bicicleta/A pé": 0,
+    "Moto": 80.5,
+    "Trem": 21,
+    "Outros": 50
 }
 
 # Lista de tipos de participantes
@@ -170,9 +357,9 @@ def gerar_grafico_base64():
         transportes_efic = list(EMISSOES_TRANSPORTE.keys())
         
         bars = ax3.bar(transportes_efic, eficiencias, color='#FF9800')
-        ax3.set_title("Eficiência de Emissão por Tipo de Transporte")
+        ax3.set_title("Emissão Fixa por Tipo de Transporte")
         ax3.set_ylabel("gCO2 por km")
-        ax3.set_xlabel("Tipo de Transporte")
+
         plt.setp(ax3.xaxis.get_majorticklabels(), rotation=45)
         
         for bar, valor in zip(bars, eficiencias):
@@ -237,7 +424,7 @@ def criar_linha_com_emoji(emoji, texto, estilo, tamanho_emoji=12):
         return Paragraph(f"• {texto}", estilo)
 
 def gerar_pdf(registro):
-    """Gera PDF com os resultados do questionário"""
+    """Gera PDF com os resultados do questionário - TABELAS SEPARADAS PT/EN"""
     try:
         buffer = BytesIO()
         
@@ -248,28 +435,46 @@ def gerar_pdf(registro):
             leftMargin=72,
             topMargin=72, 
             bottomMargin=18,
-            title=f"Emissão CO2 - {registro['email']}"
+            title=f"Emissão CO2 - {registro['email']} | CO2 Emissions - {registro['email']}"
         )
         
         elements = []
         styles = getSampleStyleSheet()
         
+        # ===== ESTILOS PERSONALIZADOS =====
         estilo_titulo = ParagraphStyle(
             'TituloPrincipal',
             parent=styles['Heading1'],
             fontSize=18,
-            spaceAfter=30,
+            spaceAfter=15,
             textColor=colors.HexColor('#2c3e50'),
             alignment=1
+        )
+        
+        estilo_titulo_en = ParagraphStyle(
+            'TituloIngles',
+            parent=styles['Normal'],
+            fontSize=12,
+            textColor=colors.HexColor('#666666'),
+            alignment=1,
+            fontName='Helvetica-Oblique'
         )
         
         estilo_subtitulo = ParagraphStyle(
             'Subtitulo',
             parent=styles['Heading2'],
             fontSize=14,
-            spaceAfter=12,
-            textColor=colors.HexColor('#34495e'),
-            borderPadding=5
+            spaceAfter=8,
+            textColor=colors.HexColor('#34495e')
+        )
+        
+        estilo_subtitulo_en = ParagraphStyle(
+            'SubtituloIngles',
+            parent=styles['Normal'],
+            fontSize=10,
+            textColor=colors.HexColor('#666666'),
+            spaceAfter=10,
+            fontName='Helvetica-Oblique'
         )
         
         estilo_normal = ParagraphStyle(
@@ -279,18 +484,42 @@ def gerar_pdf(registro):
             spaceAfter=6
         )
         
+        estilo_normal_en = ParagraphStyle(
+            'NormalIngles',
+            parent=styles['Normal'],
+            fontSize=8,
+            textColor=colors.HexColor('#666666'),
+            spaceAfter=8,
+            fontName='Helvetica-Oblique'
+        )
+        
         estilo_destaque = ParagraphStyle(
             'Destaque',
             parent=styles['Normal'],
             fontSize=12,
             textColor=colors.HexColor('#27ae60'),
-            alignment=1
+            alignment=1,
+            spaceAfter=15
+        )
+        
+        estilo_destaque_en = ParagraphStyle(
+            'DestaqueIngles',
+            parent=styles['Normal'],
+            fontSize=10,
+            textColor=colors.HexColor('#666666'),
+            alignment=1,
+            spaceAfter=20,
+            fontName='Helvetica-Oblique'
         )
 
-        # ===== CABEÇALHO =====
-        titulo = Paragraph("Cada Deslocamento Conta: Seu Impacto em CO2 no Evento", estilo_titulo)
-        elements.append(titulo)
+        # ===== CABEÇALHO BILINGUE =====
+        titulo_pt = "Cada Deslocamento Conta: Seu Impacto em CO2 no Evento"
+        titulo_en = traduzir(titulo_pt)
         
+        elements.append(Paragraph(titulo_pt, estilo_titulo))
+        elements.append(Paragraph(titulo_en, estilo_titulo_en))
+        elements.append(Spacer(1, 15))
+        # Linha divisória
         linha_divisoria = Table([[""]], colWidths=[16*cm], rowHeights=[1])
         linha_divisoria.setStyle(TableStyle([
             ('LINEABOVE', (0,0), (-1,-1), 1, colors.HexColor('#3498db')),
@@ -299,20 +528,32 @@ def gerar_pdf(registro):
         elements.append(linha_divisoria)
         elements.append(Spacer(1, 20))
 
-        # ===== DADOS DO PARTICIPANTE =====
+        # ===== DADOS DO PARTICIPANTE - SEPARADO PT/EN =====
+        
+        # TÍTULO PORTUGUÊS+++++++
         elements.append(Paragraph("DADOS DO PARTICIPANTE", estilo_subtitulo))
         
-        dados_pessoais = [
-            ["Local de Origem:", 
-             "Estrangeiro" if registro.get('estado_origem') == "Não se aplica (estrangeiro)" 
-             else registro.get('estado_origem', 'Não informado')],
+        # Traduzir dados
+        tipo_traduzido = traduzir(registro['tipo_participante'])
+        estado_origem = registro['estado_origem']
+        
+        if estado_origem == "Não se aplica (estrangeiro)":
+            estado_pt = "Estrangeiro"
+            estado_en = traduzir("Estrangeiro") or "Foreign"
+        else:
+            estado_pt = estado_origem
+            estado_en = estado_origem
+        
+        # TABELA EM PORTUGUÊS
+        dados_pessoais_pt = [
+            ["Local de Origem:", estado_pt],
             ["Tipo de Participante:", registro['tipo_participante']],
             ["Email:", registro['email']],
             ["Data do Cálculo:", registro['data']]
         ]
         
-        tabela_dados = Table(dados_pessoais, colWidths=[4*cm, 10*cm])
-        tabela_dados.setStyle(TableStyle([
+        tabela_dados_pt = Table(dados_pessoais_pt, colWidths=[4*cm, 10*cm])
+        tabela_dados_pt.setStyle(TableStyle([
             ('FONT', (0,0), (-1,-1), 'Helvetica', 10),
             ('FONT', (0,0), (0,-1), 'Helvetica-Bold', 10),
             ('BACKGROUND', (0,0), (0,-1), colors.HexColor('#ecf0f1')),
@@ -324,42 +565,73 @@ def gerar_pdf(registro):
             ('PADDING', (0,0), (-1,-1), 6),
         ]))
         
-        elements.append(tabela_dados)
+        elements.append(tabela_dados_pt)
+        elements.append(Spacer(1, 10))
+        
+        # TÍTULO INGLÊS
+        elements.append(Paragraph("PARTICIPANT DATA", estilo_subtitulo_en))
+        
+        # TABELA EM INGLÊS
+        dados_pessoais_en = [
+            ["Origin:", estado_en],
+            ["Participant Type:", tipo_traduzido],
+            ["Email:", registro['email']],
+            ["Calculation Date:", registro['data']]
+        ]
+        
+        tabela_dados_en = Table(dados_pessoais_en, colWidths=[4*cm, 10*cm])
+        tabela_dados_en.setStyle(TableStyle([
+            ('FONT', (0,0), (-1,-1), 'Helvetica-Oblique', 9),
+            ('FONT', (0,0), (0,-1), 'Helvetica-BoldOblique', 9),
+            ('BACKGROUND', (0,0), (0,-1), colors.HexColor('#f9f9f9')),
+            ('TEXTCOLOR', (0,0), (-1,-1), colors.HexColor('#666666')),
+            ('ALIGN', (0,0), (0,-1), 'LEFT'),
+            ('ALIGN', (1,0), (1,-1), 'LEFT'),
+            ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
+            ('GRID', (0,0), (-1,-1), 1, colors.HexColor('#d5dbdb')),
+            ('PADDING', (0,0), (-1,-1), 6),
+        ]))
+        
+        elements.append(tabela_dados_en)
         elements.append(Spacer(1, 25))
 
-        # ===== RESUMO DA EMISSÃO =====
-        elements.append(Paragraph("RESUMO DA EMISSÃO", estilo_subtitulo))
+        # ===== RESUMO DA EMISSÃO - SEPARADO PT/EN =====
         
         # Cálculo detalhado
         emissao_local = EMISSOES_TRANSPORTE.get(registro['transporte_local'], 5.0) * registro['distancia_local'] * registro['dias_evento']
         emissao_principal = registro['emissao_total'] - emissao_local
         
-        emissao_total = Paragraph(
-            f"<b>TOTAL DE EMISSÕES: {registro['emissao_total']:.2f} gCO2</b>", 
-            estilo_destaque
-        )
-        elements.append(emissao_total)
-        elements.append(Spacer(1, 15))
-
-        detalhes_emissao = [
+        # TÍTULO E TOTAL EM PORTUGUÊS
+        elements.append(Paragraph("RESUMO DA EMISSÃO", estilo_subtitulo))
+        elements.append(Paragraph(f"<b>TOTAL DE EMISSÕES: {registro['emissao_total']:.2f} gCO2</b>", estilo_destaque))
+        
+        # Traduzir tipos de transporte
+        transporte_cidade_pt = registro['transporte_cidade'].capitalize()
+        transporte_cidade_en = traduzir(registro['transporte_cidade']).capitalize()
+        
+        transporte_local_pt = registro['transporte_local'].capitalize()
+        transporte_local_en = traduzir(registro['transporte_local']).capitalize()
+        
+        # TABELA EM PORTUGUÊS
+        detalhes_emissao_pt = [
             ["Tipo de Deslocamento", "Transporte", "Distância", "Emissão (gCO2)"],
             [
                 "Até a cidade do evento", 
-                registro['transporte_cidade'].capitalize(), 
+                transporte_cidade_pt, 
                 f"{registro['distancia_cidade']} km", 
                 f"{emissao_principal:.2f}"
             ],
             [
                 "Deslocamento local", 
-                registro['transporte_local'].capitalize(), 
+                transporte_local_pt, 
                 f"{registro['distancia_local']} km/dia × {registro['dias_evento']} dias", 
                 f"{emissao_local:.2f}"
             ],
             ["TOTAL", "", "", f"<b>{registro['emissao_total']:.2f} gCO2</b>"]
         ]
         
-        tabela_emissao = Table(detalhes_emissao, colWidths=[5.5*cm, 3*cm, 4*cm, 3.5*cm])
-        tabela_emissao.setStyle(TableStyle([
+        tabela_emissao_pt = Table(detalhes_emissao_pt, colWidths=[5.5*cm, 3*cm, 4*cm, 3.5*cm])
+        tabela_emissao_pt.setStyle(TableStyle([
             ('FONT', (0,0), (-1,-1), 'Helvetica', 9),
             ('FONT', (0,0), (-1,0), 'Helvetica-Bold', 10),
             ('FONT', (0,-1), (-1,-1), 'Helvetica-Bold', 10),
@@ -373,24 +645,67 @@ def gerar_pdf(registro):
             ('PADDING', (0,0), (-1,-1), 8),
         ]))
         
-        elements.append(tabela_emissao)
+        elements.append(tabela_emissao_pt)
+        elements.append(Spacer(1, 15))
+        
+        # TÍTULO E TOTAL EM INGLÊS
+        elements.append(Paragraph("EMISSIONS SUMMARY", estilo_subtitulo_en))
+        elements.append(Paragraph(f"<font color='#666666'><i><b>TOTAL EMISSIONS: {registro['emissao_total']:.2f} gCO2</b></i></font>", estilo_destaque_en))
+        
+        # TABELA EM INGLÊS
+        detalhes_emissao_en = [
+            ["Trip Type", "Transport", "Distance", "Emissions (gCO2)"],
+            [
+                "To the event city", 
+                transporte_cidade_en, 
+                f"{registro['distancia_cidade']} km", 
+                f"{emissao_principal:.2f}"
+            ],
+            [
+                "Local commute", 
+                transporte_local_en, 
+                f"{registro['distancia_local']} km/day × {registro['dias_evento']} days", 
+                f"{emissao_local:.2f}"
+            ],
+            ["TOTAL", "", "", f"<b>{registro['emissao_total']:.2f} gCO2</b>"]
+        ]
+        
+        tabela_emissao_en = Table(detalhes_emissao_en, colWidths=[5.5*cm, 3*cm, 4*cm, 3.5*cm])
+        tabela_emissao_en.setStyle(TableStyle([
+            ('FONT', (0,0), (-1,-1), 'Helvetica-Oblique', 9),
+            ('FONT', (0,0), (-1,0), 'Helvetica-BoldOblique', 10),
+            ('FONT', (0,-1), (-1,-1), 'Helvetica-BoldOblique', 10),
+            ('BACKGROUND', (0,0), (-1,0), colors.HexColor('#5dade2')),
+            ('BACKGROUND', (0,-1), (-1,-1), colors.HexColor('#58d68d')),
+            ('TEXTCOLOR', (0,0), (-1,0), colors.white),
+            ('TEXTCOLOR', (0,-1), (-1,-1), colors.white),
+            ('ALIGN', (0,0), (-1,-1), 'CENTER'),
+            ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
+            ('GRID', (0,0), (-1,-1), 1, colors.HexColor('#aab7b8')),
+            ('PADDING', (0,0), (-1,-1), 8),
+        ]))
+        
+        elements.append(tabela_emissao_en)
         elements.append(Spacer(1, 25))
 
-        # ===== COMPARAÇÕES AMBIENTAIS =====
-        elements.append(Paragraph("IMPACTO AMBIENTAL - EQUIVALÊNCIAS", estilo_subtitulo))
+        # ===== COMPARAÇÕES AMBIENTAIS - SEPARADO PT/EN =====
         
         arvores = registro['emissao_total'] / 21000  # 1 árvore absorve ~21kg CO2/ano
         lampadas = registro['emissao_total'] / 450   # 1 lâmpada LED/dia
         
-        comparativos = [
+        # TÍTULO PORTUGUÊS
+        elements.append(Paragraph("IMPACTO AMBIENTAL - EQUIVALÊNCIAS", estilo_subtitulo))
+        
+        # TABELA EM PORTUGUÊS
+        comparativos_pt = [
             ["Equivalência", "Valor Aproximado"],
             ["Árvores para absorver em 1 ano", f"{arvores:.2f} árvores"],
             ["Horas de lâmpada LED (60W)", f"{lampadas:.1f} horas"],
             ["Emissão diária média brasileira*", "≈ 12.000 gCO2"]
         ]
         
-        tabela_comparativo = Table(comparativos, colWidths=[9*cm, 7*cm])
-        tabela_comparativo.setStyle(TableStyle([
+        tabela_comparativo_pt = Table(comparativos_pt, colWidths=[9*cm, 7*cm])
+        tabela_comparativo_pt.setStyle(TableStyle([
             ('FONT', (0,0), (-1,-1), 'Helvetica', 9),
             ('FONT', (0,0), (-1,0), 'Helvetica-Bold', 10),
             ('BACKGROUND', (0,0), (-1,0), colors.HexColor('#e67e22')),
@@ -401,36 +716,92 @@ def gerar_pdf(registro):
             ('PADDING', (0,0), (-1,-1), 8),
         ]))
         
-        elements.append(tabela_comparativo)
-        elements.append(Spacer(1, 10))
+        elements.append(tabela_comparativo_pt)
         
-        nota = Paragraph(
+        # Nota de rodapé em português
+        nota_pt = Paragraph(
             "* Baseado na média brasileira de 4.4 toneladas de CO2 per capita/ano",
             ParagraphStyle('Nota', parent=estilo_normal, fontSize=8, textColor=colors.gray)
         )
-        elements.append(nota)
-        elements.append(Spacer(1, 25))
-
-        # ===== RECOMENDAÇÕES =====
-        elements.append(Paragraph("RECOMENDAÇÕES PARA REDUZIR EMISSÕES", estilo_subtitulo))
+        elements.append(nota_pt)
+        elements.append(Spacer(1, 15))
         
-        recomendacoes = [
-            "🏨 Escolha acomodações próximas ao local do evento, reduzindo a necessidade de transporte motorizado",
-            "🚶 Para distâncias curtas, opte por caminhar ou pedalar, formas ativas e sustentáveis de locomoção que também favorecem a saúde e o bem-estar",
-            "🌱 Prefira transportes públicos ou coletivos para deslocamentos sempre que possível",
-            "🚗 Organize caronas solidárias com outros participantes, otimizando o uso dos veículos e diminuindo o número de deslocamentos individuais",
-            "📅 Planeje seus deslocamentos com antecedência para evitar horários de tráfego intenso e, consequentemente, o aumento do consumo de combustível",
-            "💡 Dê preferência a veículos elétricos ou híbridos, quando disponíveis, para minimizar o impacto ambiental dos deslocamentos", 
-            "🌳 Compense emissões participando de programas de reflorestamento ou outras iniciativas ambientais reconhecidas"
+        # TÍTULO INGLÊS
+        elements.append(Paragraph("ENVIRONMENTAL IMPACT - EQUIVALENCES", estilo_subtitulo_en))
+        
+        # TABELA EM INGLÊS
+        comparativos_en = [
+            ["Equivalence", "Approximate Value"],
+            ["Trees to absorb in 1 year", f"{arvores:.2f} trees"],
+            ["Hours of LED bulb (60W)", f"{lampadas:.1f} hours"],
+            ["Average daily Brazilian emission*", "≈ 12,000 gCO2"]
         ]
         
-        for rec in recomendacoes:
-            elements.append(Paragraph(rec, estilo_normal))
+        tabela_comparativo_en = Table(comparativos_en, colWidths=[9*cm, 7*cm])
+        tabela_comparativo_en.setStyle(TableStyle([
+            ('FONT', (0,0), (-1,-1), 'Helvetica-Oblique', 9),
+            ('FONT', (0,0), (-1,0), 'Helvetica-BoldOblique', 10),
+            ('BACKGROUND', (0,0), (-1,0), colors.HexColor('#f39c12')),
+            ('TEXTCOLOR', (0,0), (-1,0), colors.white),
+            ('ALIGN', (0,0), (-1,-1), 'LEFT'),
+            ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
+            ('GRID', (0,0), (-1,-1), 1, colors.HexColor('#e67e22')),
+            ('PADDING', (0,0), (-1,-1), 8),
+        ]))
+        
+        elements.append(tabela_comparativo_en)
+        
+        # Nota de rodapé em inglês
+        nota_en = Paragraph(
+            "<font color='#666666'><i>* Based on the Brazilian average of 4.4 tons of CO2 per capita/year</i></font>",
+            ParagraphStyle('Nota', parent=estilo_normal, fontSize=8, textColor=colors.gray)
+        )
+        elements.append(nota_en)
+        elements.append(Spacer(1, 25))
+
+        # ===== RECOMENDAÇÕES - LISTAS SEPARADAS PT/EN =====
+        
+        # TÍTULO PORTUGUÊS
+        elements.append(Paragraph("RECOMENDAÇÕES PARA REDUZIR EMISSÕES", estilo_subtitulo))
+        
+        # Lista em português
+        recomendacoes_pt = [
+            " Escolha acomodações próximas ao local do evento, reduzindo a necessidade de transporte motorizado",
+            " Para distâncias curtas, opte por caminhar ou pedalar, formas ativas e sustentáveis de locomoção que também favorecem a saúde e o bem-estar",
+            " Prefira transportes públicos ou coletivos para deslocamentos sempre que possível",
+            " Organize caronas solidárias com outros participantes, otimizando o uso dos veículos e diminuindo o número de deslocamentos individuais",
+            " Planeje seus deslocamentos com antecedência para evitar horários de tráfego intenso e, consequentemente, o aumento do consumo de combustível",
+            " Dê preferência a veículos elétricos ou híbridos, quando disponíveis, para minimizar o impacto ambiental dos deslocamentos", 
+            " Compense emissões participando de programas de reflorestamento ou outras iniciativas ambientais reconhecidas"
+        ]
+        
+        for rec_pt in recomendacoes_pt:
+            elements.append(Paragraph(f"• {rec_pt}", estilo_normal))
+            elements.append(Spacer(1, 4))
+        
+        elements.append(Spacer(1, 15))
+        
+        # TÍTULO INGLÊS
+        elements.append(Paragraph("RECOMMENDATIONS TO REDUCE EMISSIONS", estilo_subtitulo_en))
+        
+        # Lista em inglês (traduções)
+        recomendacoes_en = [
+            " Choose accommodations close to the event venue, reducing the need for motorized transport",
+            " For short distances, choose walking or cycling, active and sustainable forms of mobility that also promote health and well-being",
+            " Prefer public or collective transportation whenever possible",
+            " Organize carpooling with other participants, optimizing vehicle use and reducing the number of individual trips",
+            " Plan your trips in advance to avoid peak traffic times and consequently reduce fuel consumption",
+            " Prefer electric or hybrid vehicles when available to minimize the environmental impact of travel", 
+            " Compensate emissions by participating in reforestation programs or other recognized environmental initiatives"
+        ]
+        
+        for rec_en in recomendacoes_en:
+            elements.append(Paragraph(f"<font color='#666666'><i>• {rec_en}</i></font>", estilo_normal_en))
             elements.append(Spacer(1, 6))
         
         elements.append(Spacer(1, 20))
 
-        # ===== RODAPÉ =====
+        # ===== RODAPÉ SEPARADO PT/EN =====
         elements.append(Spacer(1, 10))
         linha_rodape = Table([[""]], colWidths=[16*cm], rowHeights=[1])
         linha_rodape.setStyle(TableStyle([
@@ -438,9 +809,10 @@ def gerar_pdf(registro):
         ]))
         elements.append(linha_rodape)
         
-        rodape = Paragraph(
+        # Português
+        rodape_pt = Paragraph(
             "Calculadora de Emissão de CO2 - Eventos Esportivos Sustentáveis<br/>" +
-            "Relatório gerado automaticamente - Juntos por um planeta mais verde!",
+            "Uma iniciativa da parceria entre CBVela e ETTA/UFF com o apoio do CNPq e Faperj para promover a conscientização ambiental em eventos esportivos",
             ParagraphStyle(
                 'Rodape', 
                 parent=estilo_normal, 
@@ -450,7 +822,24 @@ def gerar_pdf(registro):
                 spaceBefore=10
             )
         )
-        elements.append(rodape)
+        elements.append(rodape_pt)
+        
+        elements.append(Spacer(1, 10))
+        
+        # Inglês
+        rodape_en = Paragraph(
+            "<font color='#666666'><i>CO2 Emissions Calculator - Sustainable Sporting Events<br/>" +
+            "An initiative of the partnership between CBVela and ETTA/UFF with support from CNPq and Faperj to promote environmental awareness in sporting events</i></font>",
+            ParagraphStyle(
+                'RodapeEn', 
+                parent=estilo_normal, 
+                fontSize=8, 
+                alignment=1, 
+                textColor=colors.HexColor('#95a5a6'),
+                spaceBefore=5
+            )
+        )
+        elements.append(rodape_en)
 
         # ===== GERAR PDF =====
         doc.build(elements)
@@ -458,7 +847,7 @@ def gerar_pdf(registro):
         return buffer
         
     except Exception as e:
-        print(f"Erro ao gerar PDF: {str(e)}")
+        print(f"Erro ao gerar PDF detalhado: {str(e)}")
         return gerar_pdf_simples(registro)
 
 def gerar_pdf_simples(registro):
@@ -466,41 +855,117 @@ def gerar_pdf_simples(registro):
     buffer = BytesIO()
     p = canvas.Canvas(buffer, pagesize=A4)
     
-    p.setFont("Helvetica-Bold", 16)
-    p.drawString(100, 800, "Cada Deslocamento Conta: Seu Impacto em CO2 no Evento")
+    # Usar função traduzir() para todos os textos
+    p.setFont("Helvetica-Bold", 12)
+    titulo_pt = "Cada Deslocamento Conta: Seu Impacto em CO2 no Evento"
+    titulo_en = TRANSLATIONS.get(titulo_pt, titulo_pt) 
+    p.drawString(100, 800, titulo_pt)
+    p.setFont("Helvetica-Italic", 10)
+    p.setFillColorRGB(0.4, 0.4, 0.4)
+    p.drawString(100, 785, titulo_en)
     
     p.setFont("Helvetica", 12)
-    p.drawString(100, 770, f"Email: {registro['email']}")
-    p.drawString(100, 750, f"Tipo: {registro['tipo_participante']}")
+    p.setFillColorRGB(0, 0, 0)
     
+    # Traduzir tipo de participante
+    tipo_pt = f"Tipo: {registro['tipo_participante']}"
+    tipo_en = f"Type: {traduzir(registro['tipo_participante'])}"
+    
+    p.drawString(100, 770, f"Email: {registro['email']}")
+    p.setFont("Helvetica-Italic", 9)
+    p.setFillColorRGB(0.4, 0.4, 0.4)
+    p.drawString(100, 760, f"Email: {registro['email']}")
+    
+    p.setFont("Helvetica", 12)
+    p.setFillColorRGB(0, 0, 0)
+    p.drawString(100, 750, tipo_pt)
+    p.setFont("Helvetica-Italic", 9)
+    p.setFillColorRGB(0.4, 0.4, 0.4)
+    p.drawString(100, 740, tipo_en)
+    
+    # Emissão total
     p.setFont("Helvetica-Bold", 14)
-    p.drawString(100, 700, f"Emissão Total: {registro['emissao_total']:.2f} gCO2")
+    p.setFillColorRGB(0, 0, 0)
+    emissao_pt = f"Emissão Total: {registro['emissao_total']:.2f} gCO2"
+    emissao_en = f"Total Emissions: {registro['emissao_total']:.2f} gCO2"
+    p.drawString(100, 700, emissao_pt)
+    p.setFont("Helvetica-Italic", 10)
+    p.setFillColorRGB(0.4, 0.4, 0.4)
+    p.drawString(100, 690, emissao_en)
+    
+    # Detalhes do transporte - com traduções
+    p.setFont("Helvetica", 10)
+    p.setFillColorRGB(0, 0, 0)
+    
+    # Transporte principal traduzido
+    transporte_cidade_pt = traduzir(registro['transporte_cidade'])
+    transporte_local_pt = traduzir(registro['transporte_local'])
+    
+    p.drawString(100, 670, f"Transporte principal: {transporte_cidade_pt}")
+    p.setFont("Helvetica-Italic", 8)
+    p.setFillColorRGB(0.4, 0.4, 0.4)
+    p.drawString(100, 662, f"Main transport: {transporte_cidade_pt}")
     
     p.setFont("Helvetica", 10)
-    p.drawString(100, 670, f"Transporte principal: {registro['transporte_cidade']}")
+    p.setFillColorRGB(0, 0, 0)
     p.drawString(100, 650, f"Distância: {registro['distancia_cidade']} km")
-    p.drawString(100, 630, f"Transporte local: {registro['transporte_local']}")
-    p.drawString(100, 610, f"Dias de evento: {registro['dias_evento']}")
+    p.setFont("Helvetica-Italic", 8)
+    p.setFillColorRGB(0.4, 0.4, 0.4)
+    p.drawString(100, 642, f"Distance: {registro['distancia_cidade']} km")
     
-    p.drawString(100, 550, "Relatório gerado automaticamente")
-    p.drawString(100, 530, "Calculadora de Emissões - Eventos Sustentáveis")
+    p.setFont("Helvetica", 10)
+    p.setFillColorRGB(0, 0, 0)
+    p.drawString(100, 630, f"Transporte local: {transporte_local_pt}")
+    p.setFont("Helvetica-Italic", 8)
+    p.setFillColorRGB(0.4, 0.4, 0.4)
+    p.drawString(100, 622, f"Local transport: {transporte_local_pt}")
+    
+    p.setFont("Helvetica", 10)
+    p.setFillColorRGB(0, 0, 0)
+    p.drawString(100, 610, f"Dias de evento: {registro['dias_evento']}")
+    p.setFont("Helvetica-Italic", 8)
+    p.setFillColorRGB(0.4, 0.4, 0.4)
+    p.drawString(100, 602, f"Event days: {registro['dias_evento']}")
+    
+    # Rodapé traduzido
+    rodape1_pt = "Relatório gerado automaticamente"
+    rodape1_en = traduzir(rodape1_pt)
+    rodape2_pt = "Calculadora de Emissões - Eventos Sustentáveis"
+    rodape2_en = traduzir(rodape2_pt)
+    
+    p.setFont("Helvetica", 10)
+    p.setFillColorRGB(0, 0, 0)
+    p.drawString(100, 550, rodape1_pt)
+    p.setFont("Helvetica-Italic", 8)
+    p.setFillColorRGB(0.4, 0.4, 0.4)
+    p.drawString(100, 542, rodape1_en)
+    
+    p.setFont("Helvetica", 10)
+    p.setFillColorRGB(0, 0, 0)
+    p.drawString(100, 530, rodape2_pt)
+    p.setFont("Helvetica-Italic", 8)
+    p.setFillColorRGB(0.4, 0.4, 0.4)
+    p.drawString(100, 522, rodape2_en)
     
     p.showPage()
     p.save()
     buffer.seek(0)
     return buffer
 
+app.jinja_env.globals.update(get_translations=get_translations)
+
 # Rotas Flask
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index.html', translations=TRANSLATIONS)
 
 @app.route('/questionario')
 def questionario():
     return render_template('questionario.html', 
                           transportes=EMISSOES_TRANSPORTE.keys(),
                           tipos_participante=TIPOS_PARTICIPANTE,
-                          estados_brasil=ESTADOS_BRASIL)
+                          estados_brasil=ESTADOS_BRASIL,
+                          translations=TRANSLATIONS)
 
 @app.route('/submit', methods=['POST'])
 def submit():
@@ -548,7 +1013,8 @@ def submit():
         return render_template('resultados.html', 
                               registro=nova_resposta.to_dict(), 
                               grafico_base64=grafico_base64,
-                              resposta_id=resposta_id)
+                              resposta_id=resposta_id,
+                              translations=TRANSLATIONS)
                               
     except Exception as e:
         print(f"Erro no submit: {e}")
@@ -567,13 +1033,22 @@ def download_dados():
         with app.app_context():
             respostas = RespostaEmissao.query.all()
         
-        # Criar CSV
+        # Criar CSV com cabeçalhos bilingues
         si = StringIO()
         cw = csv.writer(si)
-        cw.writerow(['ID', 'Email', 'Estado Origem', 'Tipo Participante', 
-                     'Transporte até a Cidade', 'Distância até a Cidade (km)', 
-                     'Transporte Local', 'Distância Local (km)', 'Dias de Evento', 
-                     'Emissão Total (gCO2)', 'Data Registro'])
+        cw.writerow([
+            'ID / ID', 
+            'Email / Email', 
+            'Estado Origem / State of Origin', 
+            'Tipo Participante / Participant Type', 
+            'Transporte até a Cidade / Transport to City', 
+            'Distância até a Cidade (km) / Distance to City (km)', 
+            'Transporte Local / Local Transport', 
+            'Distância Local (km) / Local Distance (km)', 
+            'Dias de Evento / Event Days', 
+            'Emissão Total (gCO2) / Total Emissions (gCO2)', 
+            'Data Registro / Registration Date'
+        ])
         
         for resposta in respostas:
             cw.writerow([
@@ -591,8 +1066,8 @@ def download_dados():
             ])
         
         output = make_response(si.getvalue())
-        output.headers["Content-Disposition"] = "attachment; filename=emissoes_co2_regata.csv"
-        output.headers["Content-type"] = "text/csv"
+        output.headers["Content-Disposition"] = "attachment; filename=emissoes_co2_regata_pt_en.csv"
+        output.headers["Content-type"] = "text/csv; charset=utf-8"
         return output
         
     except Exception as e:
@@ -604,7 +1079,12 @@ def download_pdf(resposta_id):
         with app.app_context():
             resposta = RespostaEmissao.query.get_or_404(resposta_id)
         
-        pdf_buffer = gerar_pdf(resposta.to_dict())
+        # Tenta gerar PDF detalhado primeiro
+        try:
+            pdf_buffer = gerar_pdf(resposta.to_dict())
+        except Exception as e:
+            print(f"PDF detalhado falhou, usando simples: {e}")
+            pdf_buffer = gerar_pdf_simples(resposta.to_dict())
         
         return send_file(
             pdf_buffer,
@@ -614,6 +1094,11 @@ def download_pdf(resposta_id):
         )
     except Exception as e:
         return f"Erro ao gerar PDF: {str(e)}", 500
+
+# Teste rápido no Python para verificar as traduções
+testes = ["Carro", "Ônibus", "Avião", "Bicicleta/A pé"]
+for teste in testes:
+    print(f"{teste} -> {TRANSLATIONS.get(teste, 'NÃO TRADUZIDO')}")
 
 # Inicialização SEGURA
 def init_database():

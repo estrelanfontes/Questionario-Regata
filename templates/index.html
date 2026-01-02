@@ -3,42 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora de Emissão de CO2</title>
+    <title>{{ get_translations('Calculadora de Emissão de CO2').pt }} | {{ get_translations('CO2 Emissions Calculator').en }}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>Calculadora de Emissões de CO₂ em Deslocamentos para Eventos Náuticos</h1>
+            <div class="text-block">
+                <h1>{{ get_translations('Calculadora de Emissões de CO₂ em Deslocamentos para Eventos Náuticos').pt }}
+                    <span class="en">{{ get_translations('Calculadora de Emissões de CO₂ em Deslocamentos para Eventos Náuticos').en }}</span>
+                </h1>
+            </div>
         </header>
         
         <div class="hero">
             <div class="hero-content">
-                <h2>Faça a diferença pelo planeta</h2>
-                <p>Ao preencher o questionário, nossa calculadora conseguirá estimar suas emissões de carbono nos deslocamentos</p>
-                <a href="/questionario" class="btn-primary">Iniciar Questionário</a>
+                <div class="text-block">
+                    <h2>{{ get_translations('Faça a diferença pelo planeta').pt }}
+                        <span class="en">{{ get_translations('Faça a diferença pelo planeta').en }}</span>
+                    </h2>
+                </div>
+                <div class="text-block">
+                    <p>{{ get_translations('Ao preencher o questionário, nossa calculadora conseguirá estimar suas emissões de carbono nos deslocamentos').pt }}
+                        <span class="en">{{ get_translations('Ao preencher o questionário, nossa calculadora conseguirá estimar suas emissões de carbono nos deslocamentos').en }}</span>
+                    </p>
+                </div>
+                <div class="text-block">
+                    <a href="/questionario" class="btn-primary">{{ get_translations('Iniciar Questionário').pt }}
+                        <span class="en">{{ get_translations('Iniciar Questionário').en }}</span>
+                    </a>
+                </div>
             </div>
         </div>
         
         <div class="info-cards">
             <div class="card">
-                <h3>Por que calcular?</h3>
-                <p>O transporte é responsável por cerca de 24% das emissões globais de CO2. Suas escolhas fazem diferença!</p>
+                <div class="text-block">
+                    <h3>{{ get_translations('Por que calcular?').pt }}
+                        <span class="en">{{ get_translations('Por que calcular?').en }}</span>
+                    </h3>
+                </div>
+                <div class="text-block">
+                    <p>{{ get_translations('O transporte é responsável por cerca de 24% das emissões globais de CO2. Suas escolhas fazem diferença!').pt }}
+                        <span class="en">{{ get_translations('O transporte é responsável por cerca de 24% das emissões globais de CO2. Suas escolhas fazem diferença!').en }}</span>
+                    </p>
+                </div>
             </div>
             
             <div class="card">
-                <h3>Como funciona?</h3>
-                <p>Responda algumas perguntas sobre seus deslocamentos e veja gráficos em tempo real</p>
+                <div class="text-block">
+                    <h3>{{ get_translations('Como funciona?').pt }}
+                        <span class="en">{{ get_translations('Como funciona?').en }}</span>
+                    </h3>
+                </div>
+                <div class="text-block">
+                    <p>{{ get_translations('Responda algumas perguntas sobre seus deslocamentos e veja gráficos em tempo real').pt }}
+                        <span class="en">{{ get_translations('Responda algumas perguntas sobre seus deslocamentos e veja gráficos em tempo real').en }}</span>
+                    </p>
+                </div>
             </div>
             
             <div class="card">
-                <h3>Participe da mudança</h3>
-                <p>Seus dados ajudam a entender padrões e promover eventos mais sustentáveis</p>
+                <div class="text-block">
+                    <h3>{{ get_translations('Participe da mudança').pt }}
+                        <span class="en">{{ get_translations('Participe da mudança').en }}</span>
+                    </h3>
+                </div>
+                <div class="text-block">
+                    <p>{{ get_translations('Seus dados ajudam a entender padrões e promover eventos mais sustentáveis').pt }}
+                        <span class="en">{{ get_translations('Seus dados ajudam a entender padrões e promover eventos mais sustentáveis').en }}</span>
+                    </p>
+                </div>
             </div>
-        </div>      
+        </div>
         
         <footer>
-            <p>Uma iniciativa da parceria entre CBVela e ETTA/UFF com o apoio do CNPq para promover a conscientização ambiental em eventos esportivos</p>
+            <div class="text-block">
+                <p>{{ get_translations('Uma iniciativa da parceria entre CBVela e ETTA/UFF com o apoio do CNPq e Faperj para promover a conscientização ambiental em eventos esportivos').pt }}
+                    <span class="en">{{ get_translations('Uma iniciativa da parceria entre CBVela e ETTA/UFF com o apoio do CNPq e Faperj para promover a conscientização ambiental em eventos esportivos').en }}</span>
+                </p>
+            </div>
         </footer>
     </div>
 </body>

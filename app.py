@@ -89,6 +89,7 @@ TRANSLATIONS = {
     
     # ========== QUESTIONÁRIO (adicione estas) ==========
     "Questionário - Emissão de CO2": "Questionnaire - CO2 Emissions",
+    "Questionário de Emissão de CO2": "CO2 Emission Questionnaire",
     "Preencha as informações sobre seus deslocamentos para o evento esportivo": 
         "Fill in information about your travel to the sporting event",
     "Informações Pessoais": "Personal Information",

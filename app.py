@@ -91,13 +91,13 @@ TRANSLATIONS = {
     "Questionário - Emissão de CO2": "Questionnaire - CO2 Emissions",
     "Questionário de Emissão de CO2": "CO2 Emission Questionnaire",
     "Preencha as informações sobre seus deslocamentos para o evento esportivo": 
-        "Fill in information about your travel to the sporting event",
+    "Please enter your travel details for the sporting event",
     "Informações Pessoais": "Personal Information",
-    "Estado de Origem:": "State of Origin:",
-    "Selecione seu estado de origem": "Select your state of origin",
-    "Selecione 'Não se aplica' caso seja de outro país": "Select 'Does not apply' if from another country",
+    "Estado de Origem:": "Home State:",
+    "Selecione seu estado de origem": " --Select your home state",
+    "Selecione 'Não se aplica' caso seja de outro país": "Select 'Does not apply' if you are from another country",
     "Tipo de Participante:": "Participant Type:",
-    "Selecione seu tipo de participação": "Select your participation type",
+    "Selecione seu tipo de participação": "Select your role",
     "Email:": "Email:",
     
     # ========== TIPOS DE TRANSPORTE ==========
@@ -111,20 +111,20 @@ TRANSLATIONS = {
     "Outros": "--Other",
     
     # ========== TIPOS DE PARTICIPANTE ==========
-    "Velejador/Velejadora": "--Sailor",
-    "Técnico/Técnica": "--Technician",
-    "Acompanhante do atleta": "--Athlete companion",
-    "Comissão de regata": "--Regatta committee",
+    "Velejador(a)": "--Sailor",
+    "Técnico/Técnica": "--Coach",
+    "Acompanhante do atleta": "--Athlete Guest ",
+    "Comissão de regata": "--Race Committee",
     "Prestador/Prestadora de serviço": "--Service provider",
-    "Organização": "--Organization",
+    "Organização": "--Staff",
     "Outro": "--Other",
     
     # ========== SEÇÕES DO QUESTIONÁRIO ==========
     "Deslocamento da sua residência até o local de hospedagem durante a participação no evento": 
-        "Travel from your residence to accommodation during event participation",
+        "Travel from home to your accommodation for the event",
     "(Caso você resida nas proximidades do evento e não tenha realizado viagem, selecione 'Outros' e insira 'zero' na distância percorrida.)": 
-        "(If you live near the event and did not travel, select 'Other' and enter 'zero' for distance traveled.)",
-    "Principal meio de transporte utilizado:": "Main transportation method used:",
+        "(If you live locally and did not travel to the host city, select 'Other' and enter 'zero' for the distance)",
+    "Principal meio de transporte utilizado:": "Primary Mode of transport:",
     "Selecione...": "Select...",
     "Distância média total percorrida (ida e volta, em km):": 
         "Average total distance traveled (round trip, in km):",
@@ -155,7 +155,7 @@ TRANSLATIONS = {
     "Transporte local:": "Local transport:",
     "Dias de evento:": "Event days:",
     "Data:": "Date:",
-    "Estrangeiro": "Foreign",
+    "Estrangeiro": "International",
     
     "O que isso significa?": "What does this mean?",
     "Sua emissão de": "Your emission of",
@@ -191,8 +191,16 @@ TRANSLATIONS = {
         "Emissions Calculator - Sustainable Events",
 
 
-    "Não se aplica (estrangeiro)": "Not applicable (foreign)"
+    "Não se aplica (estrangeiro)": "Not applicable (international)",
     
+
+    "País de Origem:": "Country of Origin:",
+    "Selecione seu país de origem": " --Select your country of origin",
+    "País": "Country",
+    "País de Origem": "Country of Origin",
+    "Estrangeiro": "International",
+
+    "Abrir Google Maps": "Open Google Maps",
 }
 
 def get_translations(texto, translations_dict=TRANSLATIONS):
@@ -240,6 +248,8 @@ class RespostaEmissao(db.Model):
     
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(255), nullable=False)
+    pais_origem_pt = db.Column(db.String(100), nullable=False)  # Nome em português
+    pais_origem_en = db.Column(db.String(100), nullable=False)  # Nome em inglês
     estado_origem = db.Column(db.String(100), nullable=False)
     tipo_participante = db.Column(db.String(50), nullable=False)
     transporte_cidade = db.Column(db.String(50), nullable=False)
@@ -255,6 +265,8 @@ class RespostaEmissao(db.Model):
         return {
             'id': self.id,
             'email': self.email,
+            'pais_origem_pt': self.pais_origem_pt,
+            'pais_origem_en': self.pais_origem_en,
             'estado_origem': self.estado_origem,
             'tipo_participante': self.tipo_participante,
             'transporte_cidade': self.transporte_cidade,
@@ -299,6 +311,81 @@ ESTADOS_BRASIL = [
     "Santa Catarina", "São Paulo", "Sergipe", "Tocantins",
     "Não se aplica (estrangeiro)"
 ]
+
+
+# Listas de países (português e inglês)
+PAISES_PORTUGUES = [
+    "Afeganistão", "África do Sul", "Albânia", "Alemanha", "Andorra", "Angola", 
+    "Antígua e Barbuda", "Arábia Saudita", "Argélia", "Argentina", "Armênia", 
+    "Austrália", "Áustria", "Azerbaijão", "Bahamas", "Bahrein", "Bangladesh", 
+    "Barbados", "Bélgica", "Belize", "Benim", "Bielorrússia", "Bolívia", 
+    "Bósnia e Herzegovina", "Botsuana", "Brasil", "Brunei", "Bulgária", 
+    "Burkina Faso", "Burundi", "Butão", "Cabo Verde", "Camarões", "Camboja", 
+    "Canadá", "Catar", "Cazaquistão", "Chade", "Chile", "China", "Chipre", 
+    "Colômbia", "Comores", "Congo (Congo-Brazzaville)", "Coreia do Norte", 
+    "Coreia do Sul", "Costa do Marfim", "Costa Rica", "Croácia", "Cuba", 
+    "Dinamarca", "Djibouti", "Dominica", "Egito", "El Salvador", 
+    "Emirados Árabes Unidos", "Equador", "Eritreia", "Eslováquia", "Eslovênia", 
+    "Espanha", "Essuatíni", "Estados Unidos", "Estônia", "Etiópia", "Fiji", 
+    "Filipinas", "Finlândia", "França", "Gabão", "Gâmbia", "Gana", "Geórgia", 
+    "Granada", "Grécia", "Guatemala", "Guiana", "Guiné", "Guiné Equatorial", 
+    "Guiné-Bissau", "Haiti", "Holanda (Países Baixos)", "Honduras", "Hungria", 
+    "Iêmen", "Ilhas Marshall", "Ilhas Salomão", "Índia", "Indonésia", "Irã", 
+    "Iraque", "Irlanda", "Islândia", "Israel", "Itália", "Jamaica", "Japão", 
+    "Jordânia", "Kiribati", "Kuwait", "Laos", "Lesoto", "Letônia", "Líbano", 
+    "Libéria", "Líbia", "Liechtenstein", "Lituânia", "Luxemburgo", 
+    "Macedônia do Norte", "Madagascar", "Malásia", "Malawi", "Maldivas", "Mali", 
+    "Malta", "Marrocos", "Maurício", "Mauritânia", "México", "Micronésia", 
+    "Moçambique", "Moldávia", "Mônaco", "Mongólia", "Montenegro", 
+    "Myanmar (Birmânia)", "Namíbia", "Nauru", "Nepal", "Nicarágua", "Níger", 
+    "Nigéria", "Noruega", "Nova Zelândia", "Omã", "Palau", "Palestina (Estado da)", 
+    "Panamá", "Papua-Nova Guiné", "Paquistão", "Paraguai", "Peru", "Polônia", 
+    "Portugal", "Quênia", "Quirguistão", "Reino Unido", "República Centro-Africana", 
+    "República Democrática do Congo", "República Dominicana", "República Tcheca", 
+    "Romênia", "Ruanda", "Rússia", "Samoa", "Santa Lúcia", "São Cristóvão e Névis", 
+    "São Marinho", "São Tomé e Príncipe", "São Vicente e Granadinas", "Seicheles", 
+    "Senegal", "Serra Leoa", "Sérvia", "Singapura", "Síria", "Somália", "Sri Lanka", 
+    "Sudão", "Sudão do Sul", "Suécia", "Suíça", "Suriname", "Tailândia", 
+    "Tajiquistão", "Tanzânia", "Timor-Leste", "Togo", "Tonga", "Trinidad e Tobago", 
+    "Tunísia", "Turcomenistão", "Turquia", "Tuvalu", "Ucrânia", "Uganda", 
+    "Uruguai", "Uzbequistão", "Vanuatu", "Vaticano (Santa Sé)", "Venezuela", 
+    "Vietnã", "Zâmbia", "Zimbábue"
+]
+
+PAISES_INGLES = [
+"--Afghanistan", "--South Africa", "--Albania", "--Germany", "--Andorra", "--Angola", "--Antigua and Barbuda", 
+"--Saudi Arabia", "--Algeria", "--Argentina", "--Armenia", "--Australia", "--Austria", "--Azerbaijan", "--Bahamas", 
+"--Bahrain", "--Bangladesh", "--Barbados", "--Belgium", "--Belize", "--Benin", "--Belarus", "--Bolivia",
+ "--Bosnia and Herzegovina", "--Botswana", "--Brazil", "--Brunei", "--Bulgaria", "--Burkina Faso", "--Burundi",
+   "--Bhutan", "--Cabo Verde", "--Cameroon", "--Cambodia", "--Canada", "--Qatar", "--Kazakhstan", "--Chad", "--Chile",
+ "--China", "--Cyprus", "--Colombia", "--Comoros", "--Congo (Congo-Brazzaville)", "--North Korea", "--South Korea",
+"--Côte d'Ivoire", "--Costa Rica", "--Croatia", "--Cuba", "--Denmark", "--Djibouti", "--Dominica", "--Egypt", "--El Salvador",
+"--United Arab Emirates", "--Ecuador", "--Eritrea", "--Slovakia", "--Slovenia", "--Spain", "--Eswatini", "--United States", 
+"--Estonia", "--Ethiopia", "--Fiji", "--Philippines", "--Finland", "--France", "--Gabon", "--Gambia", "--Ghana", "--Georgia", 
+"--Grenada", "--Greece", "--Guatemala", "--Guyana", "--Guinea", "--Equatorial Guinea", "--Guinea-Bissau", "--Haiti", 
+"--Netherlands", "--Honduras", "--Hungary", "--Yemen", "--Marshall Islands", "--Solomon Islands", "--India", "--Indonesia", 
+"--Iran", "--Iraq", "--Ireland", "--Iceland", "--Israel", "--Italy", "--Jamaica", "--Japan", "--Jordan", "--Kiribati", 
+"--Kuwait", "--Laos", "--Lesotho", "--Latvia", "--Lebanon", "--Liberia", "--Libya", "--Liechtenstein", "--Lithuania", 
+"--Luxembourg", "--North Macedonia", "--Madagascar", "--Malaysia", "--Malawi", "--Maldives", "--Mali", "--Malta", "--Morocco", 
+"--Mauritius", "--Mauritania", "--Mexico", "--Micronesia", "--Mozambique", "--Moldova", "--Monaco", "--Mongolia", 
+"--Montenegro", "--Myanmar (Burma)", "--Namibia", "--Nauru", "--Nepal", "--Nicaragua", "--Niger", "--Nigeria", "--Norway", 
+"--New Zealand", "--Oman", "--Palau", "--Palestine (State of)", "--Panama", "--Papua New Guinea", "--Pakistan", "--Paraguay", 
+"--Peru", "--Poland", "--Portugal", "--Kenya", "--Kyrgyzstan", "--United Kingdom", "--Central African Republic", 
+"--Democratic Republic of the Congo", "--Dominican Republic", "--Czechia (Czech Republic)", "--Romania", "--Rwanda", "--Russia", 
+"--Samoa", "--Saint Lucia", "--Saint Kitts and Nevis", "--San Marino", "--Sao Tome and Principe", 
+"--Saint Vincent and the Grenadines", "--Seychelles", "--Senegal", "--Sierra Leone", "--Serbia", "--Singapore", "--Syria", 
+"--Somalia", "--Sri Lanka", "--Sudan", "--South Sudan", "--Sweden", "--Switzerland", "--Suriname", "--Thailand", "--Tajikistan", 
+"--Tanzania", "--Timor-Leste", "--Togo", "--Tonga", "--Trinidad and Tobago", "--Tunisia", "--Turkmenistan", "--Turkey", 
+"--Tuvalu", "--Ukraine", "--Uganda", "--Uruguay", "--Uzbequistão", "--Vanuatu", "--Holy See (Vatican City)", "--Venezuela", 
+"--Vietnam", "--Zambia", "--Zimbabwe"
+]
+
+# Criar dicionário de correspondência entre português e inglês
+PAISES_DICT = dict(zip(PAISES_PORTUGUES, PAISES_INGLES))
+
+# Atualizar TRANSLATIONS com as traduções dos países
+for pt, en in PAISES_DICT.items():
+    TRANSLATIONS[pt] = en
 
 # Função para gerar gráfico
 def gerar_grafico_base64():
@@ -540,13 +627,14 @@ def gerar_pdf(registro):
         
         if estado_origem == "Não se aplica (estrangeiro)":
             estado_pt = "Estrangeiro"
-            estado_en = traduzir("Estrangeiro") or "Foreign"
+            estado_en = traduzir("Estrangeiro") or "International"
         else:
             estado_pt = estado_origem
             estado_en = estado_origem
         
         # TABELA EM PORTUGUÊS
         dados_pessoais_pt = [
+            ["País de Origem:", registro['pais_origem_pt']],  # Nova linha
             ["Local de Origem:", estado_pt],
             ["Tipo de Participante:", registro['tipo_participante']],
             ["Email:", registro['email']],
@@ -574,6 +662,7 @@ def gerar_pdf(registro):
         
         # TABELA EM INGLÊS
         dados_pessoais_en = [
+            ["Country of Origin:", registro['pais_origem_en']],
             ["Origin:", estado_en],
             ["Participant Type:", tipo_traduzido],
             ["Email:", registro['email']],
@@ -691,7 +780,7 @@ def gerar_pdf(registro):
 
         # ===== COMPARAÇÕES AMBIENTAIS - SEPARADO PT/EN =====
         
-        arvores = registro['emissao_total'] / 21000  # 1 árvore absorve ~21kg CO2/ano
+        arvores = registro['emissao_total'] / 7000000  # 1 árvore absorve ~7.000.000g CO2/ano
         lampadas = registro['emissao_total'] / 450   # 1 lâmpada LED/dia
         
         # TÍTULO PORTUGUÊS
@@ -966,6 +1055,9 @@ def questionario():
                           transportes=EMISSOES_TRANSPORTE.keys(),
                           tipos_participante=TIPOS_PARTICIPANTE,
                           estados_brasil=ESTADOS_BRASIL,
+                          paises_portugues=PAISES_PORTUGUES,  # Nova
+                          paises_ingles=PAISES_INGLES,        # Nova
+                          paises_dict=PAISES_DICT,            # Nova
                           translations=TRANSLATIONS)
 
 @app.route('/submit', methods=['POST'])
@@ -973,6 +1065,11 @@ def submit():
     try:
         dados_form = request.form
         
+        pais_pt = dados_form['pais_origem']
+        
+        pais_en = PAISES_DICT.get(pais_pt, pais_pt)
+
+
         # Validações e cálculos
         tipo_participante = dados_form['tipo_participante']
         if tipo_participante not in TIPOS_PARTICIPANTE:
@@ -993,6 +1090,8 @@ def submit():
         with app.app_context():
             nova_resposta = RespostaEmissao(
                 email=dados_form['email'],
+                pais_origem_pt=pais_pt,
+                pais_origem_en=pais_en,
                 estado_origem=dados_form['estado_origem'],
                 tipo_participante=tipo_participante,
                 transporte_cidade=transporte_principal,
@@ -1040,7 +1139,8 @@ def download_dados():
         cw.writerow([
             'ID / ID', 
             'Email / Email', 
-            'Estado Origem / State of Origin', 
+            'País Origem (PT) / Country of Origin (EN)',
+            'Estado Origem / Home State', 
             'Tipo Participante / Participant Type', 
             'Transporte até a Cidade / Transport to City', 
             'Distância até a Cidade (km) / Distance to City (km)', 
@@ -1055,6 +1155,7 @@ def download_dados():
             cw.writerow([
                 resposta.id,
                 resposta.email,
+                f"{resposta.pais_origem_pt} / {resposta.pais_origem_en}",
                 resposta.estado_origem,
                 resposta.tipo_participante,
                 resposta.transporte_cidade,

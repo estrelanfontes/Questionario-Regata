@@ -29,6 +29,29 @@
                     </h2>
                 </div>
                 
+                <!-- NOVO CAMPO: País de origem -->
+                <div class="form-group">
+                    <div class="text-block">
+                        <label for="pais_origem">{{ get_translations('País de Origem:').pt }}
+                            <span class="en">{{ get_translations('País de Origem:').en }}</span>
+                        </label>
+                    </div>
+                    <select id="pais_origem" name="pais_origem" required onchange="atualizarEstados()">
+                        <option value="">{{ get_translations('Selecione seu país de origem').pt }}
+                            <span class="en">{{ get_translations('Selecione seu país de origem').en }}</span>
+                        </option>
+                        {% for pais_pt in paises_portugues %}
+                            {% set pais_en = paises_dict.get(pais_pt, pais_pt) %}
+                            <option value="{{ pais_pt }}" data-en="{{ pais_en }}">
+                                {{ pais_pt }}
+                                <span class="en">{{ pais_en }}</span>
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+
+
                 <!-- CAMPO ATUALIZADO: Estado de origem -->
                 <div class="form-group">
                     <div class="text-block">
@@ -143,6 +166,49 @@
                     </div>
                     <input type="number" id="distancia_cidade" name="distancia_cidade" min="0" step="0.1" required>
                 </div>
+            
+            
+
+                        <!-- Adicione este código após cada campo de distância -->
+            <div class="maps-help-section" style="margin-top: 10px; padding: 10px; background: #e8f4fc; border-radius: 5px;">
+                <div class="text-block">
+                    <p style="margin: 0 0 8px 0;">
+                        <strong>📍 {{ get_translations('Precisa calcular a distância?').pt }}</strong>
+                        <span class="en"><strong>📍 {{ get_translations('Need to calculate distance?').en }}</strong></span>
+                    </p>
+                </div>
+                
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <a href="https://www.google.com/maps" 
+                    target="_blank" 
+                    class="btn-maps-primary"
+                    style="padding: 8px 15px; background: #4285F4; color: white; text-decoration: none; border-radius: 4px; display: inline-flex; align-items: center; gap: 5px;">
+                        <span style="font-size: 1.2em;">📍</span>
+                        <span>
+                            {{ get_translations('Abrir Google Maps').pt }}<br>
+                            <small style="font-size: 0.8em; opacity: 0.9;">{{ get_translations('Abrir Google Maps').en }}</small>
+                        </span>
+                    </a>
+                    
+                    <a href="#" 
+                    onclick="alert('1. Abra Google Maps\n2. Selecione seu trajeto\n3. Escolha um meio de transporte\n4. Multiplique a quilometragem por 2 (ida e volta)\n\n1. Open Google Maps\n2. Select your route\n3. Choose a mode of transportation\n4. Multiply the mileage by 2 (round trip)'); return false;"
+                    class="btn-maps-help"
+                    style="padding: 8px 15px; background: #f39c12; color: white; text-decoration: none; border-radius: 4px; display: inline-flex; align-items: center; gap: 5px;">
+                        <span style="font-size: 1.2em;">❓</span>
+                        <span>
+                            {{ get_translations('Instruções').pt }}<br>
+                            <small style="font-size: 0.8em; opacity: 0.9;">{{ get_translations('Instructions').en }}</small>
+                        </span>
+                    </a>
+                </div>
+                
+                <div class="text-block" style="margin-top: 10px;">
+                    <small style="color: #666;">
+                        {{ get_translations('Lembrete: Digite o valor da distância TOTAL (ida e volta)').pt }}
+                        <span class="en">{{ get_translations('Reminder: Enter TOTAL distance value (round trip)').en }}</span>
+                    </small>
+                </div>
+            </div>
             </div>
             
             <div class="form-section">
@@ -178,6 +244,49 @@
                         </label>
                     </div>
                     <input type="number" id="distancia_local" name="distancia_local" min="0" step="0.1" required>
+        
+
+
+                                <!-- Adicione este código após cada campo de distância -->
+                <div class="maps-help-section" style="margin-top: 10px; padding: 10px; background: #e8f4fc; border-radius: 5px;">
+                    <div class="text-block">
+                        <p style="margin: 0 0 8px 0;">
+                            <strong>📍 {{ get_translations('Precisa calcular a distância?').pt }}</strong>
+                            <span class="en"><strong>📍 {{ get_translations('Need to calculate distance?').en }}</strong></span>
+                        </p>
+                    </div>
+                    
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                        <a href="https://www.google.com/maps" 
+                        target="_blank" 
+                        class="btn-maps-primary"
+                        style="padding: 8px 15px; background: #4285F4; color: white; text-decoration: none; border-radius: 4px; display: inline-flex; align-items: center; gap: 5px;">
+                            <span style="font-size: 1.2em;">📍</span>
+                            <span>
+                                {{ get_translations('Abrir Google Maps').pt }}<br>
+                                <small style="font-size: 0.8em; opacity: 0.9;">{{ get_translations('Abrir Google Maps').en }}</small>
+                            </span>
+                        </a>
+                        
+                        <a href="#" 
+                        onclick="alert('1. Abra Google Maps\n2. Selecione seu trajeto\n3. Escolha um meio de transporte\n4. Multiplique a quilometragem por 2 (ida e volta)\n\n1. Open Google Maps\n2. Select your route\n3. Choose a mode of transportation\n4. Multiply the mileage by 2 (round trip)'); return false;"
+                        class="btn-maps-help"
+                        style="padding: 8px 15px; background: #f39c12; color: white; text-decoration: none; border-radius: 4px; display: inline-flex; align-items: center; gap: 5px;">
+                            <span style="font-size: 1.2em;">❓</span>
+                            <span>
+                                {{ get_translations('Instruções').pt }}<br>
+                                <small style="font-size: 0.8em; opacity: 0.9;">{{ get_translations('Instructions').en }}</small>
+                            </span>
+                        </a>
+                    </div>
+                    
+                    <div class="text-block" style="margin-top: 10px;">
+                        <small style="color: #666;">
+                            {{ get_translations('Lembrete: Digite o valor da distância TOTAL (ida e volta)').pt }}
+                            <span class="en">{{ get_translations('Reminder: Enter TOTAL distance value (round trip)').en }}</span>
+                        </small>
+                    </div>
+                </div>
                 </div>
                 
                 <div class="form-group">
@@ -207,5 +316,6 @@
             </div>
         </footer>
     </div>
+
 </body>
 </html>

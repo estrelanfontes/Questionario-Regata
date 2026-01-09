@@ -72,6 +72,16 @@
                         </h3>
                     </div>
                     <ul>
+
+                                                    <!-- Em resultados.html, adicione: -->
+                            <div class="info-row">
+                                <div class="text-block">
+                                    <strong>{{ get_translations('País de Origem:').pt }}</strong>
+                                    <span class="en">{{ get_translations('País de Origem:').en }}</span>
+                                </div>
+                                <span>{{ registro.pais_origem_pt }}</span>
+                                <span class="en">{{ registro.pais_origem_en }}</span>
+                            </div>
                     
                             <div class="text-block">
                                 <strong>{{ get_translations('Local de Origem:').pt }}</strong>

@@ -34,7 +34,7 @@ TRANSLATIONS = {
     "Tipo de Deslocamento": "Trip Type",
     "Transporte": "Transport",
     "Distância": "Distance",
-    "Emissão (gCO2)": "Emissions (gCO2)",
+    "Emissão (kgCO2e)": "Emissions (kgCO2e)",
     "Até a cidade do evento": "To the event city",
     "Deslocamento local": "Local commute",
     "TOTAL": "TOTAL",
@@ -61,12 +61,12 @@ TRANSLATIONS = {
     "Árvores para absorver em 1 ano": "Trees to absorb in 1 year",
     "Horas de lâmpada LED (60W)": "Hours of LED bulb (60W)",
     "Emissão diária média brasileira*": "Average daily Brazilian emission*",
-    "Baseado na média brasileira de 4.4 toneladas de CO2 per capita/ano": 
-        "Based on the Brazilian average of 4.4 tons of CO2 per capita/year",
+    "Baseado na média brasileira de 4.4 toneladas de CO2e per capita/ano": 
+        "Based on the Brazilian average of 4.4 tons of CO2e per capita/year",
 
     # ========== MENU / TÍTULOS ==========
-    "Calculadora de Emissões de CO₂ em Deslocamentos para Eventos Náuticos": 
-        "CO₂ Emissions Calculator for Travel to Nautical Events",
+    "Calculadora de Emissões de CO2e em Deslocamentos para Eventos Náuticos": 
+        "CO2e Emissions Calculator for Travel to Nautical Events",
     "Faça a diferença pelo planeta": "Make a difference for the planet",
     "Ao preencher o questionário, nossa calculadora conseguirá estimar suas emissões de carbono nos deslocamentos": 
         "By filling out the questionnaire, our calculator can estimate your carbon emissions from travel",
@@ -74,8 +74,8 @@ TRANSLATIONS = {
     
     # ========== CARTÕES DA PÁGINA INICIAL ==========
     "Por que calcular?": "Why calculate?",
-    "O transporte é responsável por cerca de 24% das emissões globais de CO2. Suas escolhas fazem diferença!": 
-        "Transportation accounts for about 24% of global CO2 emissions. Your choices matter!",
+    "O transporte é responsável por cerca de 24% das emissões globais de CO2e. Suas escolhas fazem diferença!": 
+        "Transportation accounts for about 24% of global CO2e emissions. Your choices matter!",
     "Como funciona?": "How does it work?",
     "Responda algumas perguntas sobre seus deslocamentos e veja gráficos em tempo real": 
         "Answer some questions about your travel and see real-time graphs",
@@ -88,8 +88,8 @@ TRANSLATIONS = {
     "An initiative of the partnership between CBVela and ETTA/UFF with support from CNPq and Faperj to promote environmental awareness in sporting events",
     
     # ========== QUESTIONÁRIO (adicione estas) ==========
-    "Questionário - Emissão de CO2": "Questionnaire - CO2 Emissions",
-    "Questionário de Emissão de CO2": "CO2 Emission Questionnaire",
+    "Questionário - Emissão de CO2e": "Questionnaire - CO2e Emissions",
+    "Questionário de Emissão de CO2e": "CO2e Emission Questionnaire",
     "Preencha as informações sobre seus deslocamentos para o evento esportivo": 
     "Please enter your travel details for the sporting event",
     "Informações Pessoais": "Personal Information",
@@ -140,8 +140,8 @@ TRANSLATIONS = {
     "Voltar para a página inicial": "Back to home page",
     
     # ========== PÁGINA DE RESULTADOS ==========
-    "Resultados - Emissão de CO2": "Results - CO2 Emissions",
-    "Resultados da Sua Emissão de CO2": "Your CO2 Emissions Results",
+    "Resultados - Emissão de CO2e": "Results - CO2e Emissions",
+    "Resultados da Sua Emissão de CO2e": "Your CO2e Emissions Results",
     "Veja o impacto ambiental dos seus deslocamentos": 
         "See the environmental impact of your travel",
     
@@ -159,8 +159,8 @@ TRANSLATIONS = {
     
     "O que isso significa?": "What does this mean?",
     "Sua emissão de": "Your emission of",
-    "g CO2 equivale a:": "g CO2 equals:",
-    "árvores absorvendo CO2 por um ano": "trees absorbing CO2 for one year",
+    "g CO2e equivale a:": "g CO2e equals:",
+    "árvores absorvendo CO2e por um ano": "trees absorbing CO2e for one year",
     
     "Estatísticas Coletivas": "Collective Statistics",
     "Gráficos atualizados com todas as respostas recebidas:": 
@@ -184,8 +184,8 @@ TRANSLATIONS = {
         "Together we can promote more sustainable sporting events!",
     
     # ========== TEXTOS DO PDF ==========
-    "Cada Deslocamento Conta: Seu Impacto em CO2 no Evento": 
-    "Every Trip Counts: Your CO2 Impact at the Event",
+    "Cada Deslocamento Conta: Seu Impacto em CO2e no Evento": 
+    "Every Trip Counts: Your CO2e Impact at the Event",
     "Relatório gerado automaticamente": "Report automatically generated",
     "Calculadora de Emissões - Eventos Sustentáveis": 
         "Emissions Calculator - Sustainable Events",
@@ -409,7 +409,7 @@ def gerar_grafico_base64():
                 emissoes_tipo[tipo] += float(resposta.emissao_total)
         
         fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(20, 6))
-        fig.suptitle('Análise de Emissões de CO2 - Regata', fontsize=16, fontweight='bold')
+        fig.suptitle('Análise de Emissões de CO2e - Regata', fontsize=16, fontweight='bold')
         
         # Gráfico 1: Emissões por tipo de transporte
         transportes_validos = [t for t in emissoes_transporte.keys() if emissoes_transporte[t] > 0]
@@ -431,7 +431,7 @@ def gerar_grafico_base64():
             cores2 = [plt.cm.viridis(i / max(num_cores, 1)) for i in range(num_cores)]
             bars = ax2.bar(tipos_validos, valores_tipos, color=cores2)
             ax2.set_title("Emissões por Tipo de Participante")
-            ax2.set_ylabel("Emissão de CO2 (g)")
+            ax2.set_ylabel("Emissão de CO2e (g)")
             plt.setp(ax2.xaxis.get_majorticklabels(), rotation=45, ha='right')
             
             for bar, valor in zip(bars, valores_tipos):
@@ -446,7 +446,7 @@ def gerar_grafico_base64():
         
         bars = ax3.bar(transportes_efic, eficiencias, color='#FF9800')
         ax3.set_title("Emissão Fixa por Tipo de Transporte")
-        ax3.set_ylabel("gCO2 por km")
+        ax3.set_ylabel("gCO2e por km")
 
         plt.setp(ax3.xaxis.get_majorticklabels(), rotation=45)
         
@@ -523,7 +523,7 @@ def gerar_pdf(registro):
             leftMargin=72,
             topMargin=72, 
             bottomMargin=18,
-            title=f"Emissão CO2 - {registro['email']} | CO2 Emissions - {registro['email']}"
+            title=f"Emissão CO2e - {registro['email']} | CO2e Emissions - {registro['email']}"
         )
         
         elements = []
@@ -601,7 +601,7 @@ def gerar_pdf(registro):
         )
 
         # ===== CABEÇALHO BILINGUE =====
-        titulo_pt = "Cada Deslocamento Conta: Seu Impacto em CO2 no Evento"
+        titulo_pt = "Cada Deslocamento Conta: Seu Impacto em CO2e no Evento"
         titulo_en = traduzir(titulo_pt)
         
         elements.append(Paragraph(titulo_pt, estilo_titulo))
@@ -693,7 +693,7 @@ def gerar_pdf(registro):
         
         # TÍTULO E TOTAL EM PORTUGUÊS
         elements.append(Paragraph("RESUMO DA EMISSÃO", estilo_subtitulo))
-        elements.append(Paragraph(f"<b>TOTAL DE EMISSÕES: {registro['emissao_total']:.2f} gCO2</b>", estilo_destaque))
+        elements.append(Paragraph(f"TOTAL DE EMISSÕES: {registro['emissao_total']:.2f} kgCO2e", estilo_destaque))
         
         # Traduzir tipos de transporte
         transporte_cidade_pt = registro['transporte_cidade'].capitalize()
@@ -704,7 +704,7 @@ def gerar_pdf(registro):
         
         # TABELA EM PORTUGUÊS
         detalhes_emissao_pt = [
-            ["Tipo de Deslocamento", "Transporte", "Distância", "Emissão (gCO2)"],
+            ["Tipo de Deslocamento", "Transporte", "Distância", "Emissão (kgCO2e)"],
             [
                 "Até a cidade do evento", 
                 transporte_cidade_pt, 
@@ -717,7 +717,7 @@ def gerar_pdf(registro):
                 f"{registro['distancia_local']} km/dia × {registro['dias_evento']} dias", 
                 f"{emissao_local:.2f}"
             ],
-            ["TOTAL", "", "", f"<b>{registro['emissao_total']:.2f} gCO2</b>"]
+            ["TOTAL", "", "", f"{registro['emissao_total']:.2f} kgCO2e"]
         ]
         
         tabela_emissao_pt = Table(detalhes_emissao_pt, colWidths=[5.5*cm, 3*cm, 4*cm, 3.5*cm])
@@ -740,11 +740,11 @@ def gerar_pdf(registro):
         
         # TÍTULO E TOTAL EM INGLÊS
         elements.append(Paragraph("EMISSIONS SUMMARY", estilo_subtitulo_en))
-        elements.append(Paragraph(f"<font color='#666666'><i><b>TOTAL EMISSIONS: {registro['emissao_total']:.2f} gCO2</b></i></font>", estilo_destaque_en))
+        elements.append(Paragraph(f"<font color='#666666'><i>TOTAL EMISSIONS: {registro['emissao_total']:.2f} kgCO2</i></font>", estilo_destaque_en))
         
         # TABELA EM INGLÊS
         detalhes_emissao_en = [
-            ["Trip Type", "Transport", "Distance", "Emissions (gCO2)"],
+            ["Trip Type", "Transport", "Distance", "Emissions (kgCO2e)"],
             [
                 "To the event city", 
                 transporte_cidade_en, 
@@ -757,7 +757,7 @@ def gerar_pdf(registro):
                 f"{registro['distancia_local']} km/day × {registro['dias_evento']} days", 
                 f"{emissao_local:.2f}"
             ],
-            ["TOTAL", "", "", f"<b>{registro['emissao_total']:.2f} gCO2</b>"]
+            ["TOTAL", "", "", f"{registro['emissao_total']:.2f} kgCO2e"]
         ]
         
         tabela_emissao_en = Table(detalhes_emissao_en, colWidths=[5.5*cm, 3*cm, 4*cm, 3.5*cm])
@@ -791,7 +791,7 @@ def gerar_pdf(registro):
             ["Equivalência", "Valor Aproximado"],
             ["Árvores para absorver em 1 ano", f"{arvores:.2f} árvores"],
             ["Horas de lâmpada LED (60W)", f"{lampadas:.1f} horas"],
-            ["Emissão diária média brasileira*", "≈ 12.000 gCO2"]
+            ["Emissão diária média brasileira*", "≈ 12 kgCO2e"]
         ]
         
         tabela_comparativo_pt = Table(comparativos_pt, colWidths=[9*cm, 7*cm])
@@ -810,7 +810,7 @@ def gerar_pdf(registro):
         
         # Nota de rodapé em português
         nota_pt = Paragraph(
-            "* Baseado na média brasileira de 4.4 toneladas de CO2 per capita/ano",
+            "* Baseado na média brasileira de 4.4 toneladas de CO2e per capita/ano",
             ParagraphStyle('Nota', parent=estilo_normal, fontSize=8, textColor=colors.gray)
         )
         elements.append(nota_pt)
@@ -824,7 +824,7 @@ def gerar_pdf(registro):
             ["Equivalence", "Approximate Value"],
             ["Trees to absorb in 1 year", f"{arvores:.2f} trees"],
             ["Hours of LED bulb (60W)", f"{lampadas:.1f} hours"],
-            ["Average daily Brazilian emission*", "≈ 12,000 gCO2"]
+            ["Average daily Brazilian emission*", "≈ 12 kgCO2e"]
         ]
         
         tabela_comparativo_en = Table(comparativos_en, colWidths=[9*cm, 7*cm])
@@ -843,7 +843,7 @@ def gerar_pdf(registro):
         
         # Nota de rodapé em inglês
         nota_en = Paragraph(
-            "<font color='#666666'><i>* Based on the Brazilian average of 4.4 tons of CO2 per capita/year</i></font>",
+            "<font color='#666666'><i>* Based on the Brazilian average of 4.4 tons of CO2e per capita/year</i></font>",
             ParagraphStyle('Nota', parent=estilo_normal, fontSize=8, textColor=colors.gray)
         )
         elements.append(nota_en)
@@ -901,7 +901,7 @@ def gerar_pdf(registro):
         
         # Português
         rodape_pt = Paragraph(
-            "Calculadora de Emissão de CO2 - Eventos Esportivos Sustentáveis<br/>" +
+            "Calculadora de Emissão de CO2e - Eventos Esportivos Sustentáveis<br/>" +
             "Uma iniciativa da parceria entre CBVela e ETTA/UFF com o apoio do CNPq e Faperj para promover a conscientização ambiental em eventos esportivos",
             ParagraphStyle(
                 'Rodape', 
@@ -918,7 +918,7 @@ def gerar_pdf(registro):
         
         # Inglês
         rodape_en = Paragraph(
-            "<font color='#666666'><i>CO2 Emissions Calculator - Sustainable Sporting Events<br/>" +
+            "<font color='#666666'><i>CO2e Emissions Calculator - Sustainable Sporting Events<br/>" +
             "An initiative of the partnership between CBVela and ETTA/UFF with support from CNPq and Faperj to promote environmental awareness in sporting events</i></font>",
             ParagraphStyle(
                 'RodapeEn', 
@@ -947,7 +947,7 @@ def gerar_pdf_simples(registro):
     
     # Usar função traduzir() para todos os textos
     p.setFont("Helvetica-Bold", 12)
-    titulo_pt = "Cada Deslocamento Conta: Seu Impacto em CO2 no Evento"
+    titulo_pt = "Cada Deslocamento Conta: Seu Impacto em CO2e no Evento"
     titulo_en = TRANSLATIONS.get(titulo_pt, titulo_pt) 
     p.drawString(100, 800, titulo_pt)
     p.setFont("Helvetica-Italic", 10)
@@ -976,8 +976,8 @@ def gerar_pdf_simples(registro):
     # Emissão total
     p.setFont("Helvetica-Bold", 14)
     p.setFillColorRGB(0, 0, 0)
-    emissao_pt = f"Emissão Total: {registro['emissao_total']:.2f} gCO2"
-    emissao_en = f"Total Emissions: {registro['emissao_total']:.2f} gCO2"
+    emissao_pt = f"Emissão Total: {registro['emissao_total']:.2f} kgCO2e"
+    emissao_en = f"Total Emissions: {registro['emissao_total']:.2f} kgCO2e"
     p.drawString(100, 700, emissao_pt)
     p.setFont("Helvetica-Italic", 10)
     p.setFillColorRGB(0.4, 0.4, 0.4)
@@ -1065,12 +1065,27 @@ def submit():
     try:
         dados_form = request.form
         
+        # Obter país
         pais_pt = dados_form['pais_origem']
-        
         pais_en = PAISES_DICT.get(pais_pt, pais_pt)
+        
+        # Obter estado - lógica corrigida
+        estado_origem = dados_form['estado_origem']
+        
+        # Se for estrangeiro, SEMPRE usar "Não se aplica (estrangeiro)"
+        if pais_pt != "Brasil":
+            estado_origem = "Não se aplica (estrangeiro)"
+            print(f"Usuário estrangeiro ({pais_pt}). Estado definido como: {estado_origem}")
+        
+        # Validação: Brasileiros devem ter estado selecionado
+        if pais_pt == "Brasil" and (not estado_origem or estado_origem == "Não se aplica (estrangeiro)"):
+            return jsonify({
+                'erro': True,
+                'mensagem': 'Usuários brasileiros devem selecionar um estado.',
+                'message': 'Brazilian users must select a state.'
+            }), 400
 
 
-        # Validações e cálculos
         tipo_participante = dados_form['tipo_participante']
         if tipo_participante not in TIPOS_PARTICIPANTE:
             tipo_participante = "Outro"
@@ -1084,7 +1099,7 @@ def submit():
         dias_evento = int(dados_form['dias_evento'])
         emissao_local = EMISSOES_TRANSPORTE.get(transporte_local, 5.0) * distancia_local * dias_evento
         
-        emissao_total = emissao_principal + emissao_local
+        emissao_total = (emissao_principal + emissao_local)/1000  # Converter para kgCO2e
         
         # Criar registro no banco
         with app.app_context():
@@ -1147,7 +1162,7 @@ def download_dados():
             'Transporte Local / Local Transport', 
             'Distância Local (km) / Local Distance (km)', 
             'Dias de Evento / Event Days', 
-            'Emissão Total (gCO2) / Total Emissions (gCO2)', 
+            'Emissão Total (kgCO2e) / Total Emissions (kgCO2e)', 
             'Data Registro / Registration Date'
         ])
         
@@ -1168,7 +1183,7 @@ def download_dados():
             ])
         
         output = make_response(si.getvalue())
-        output.headers["Content-Disposition"] = "attachment; filename=emissoes_co2_regata_pt_en.csv"
+        output.headers["Content-Disposition"] = "attachment; filename=emissoes_co2e_regata_pt_en.csv"
         output.headers["Content-type"] = "text/csv; charset=utf-8"
         return output
         
@@ -1191,7 +1206,7 @@ def download_pdf(resposta_id):
         return send_file(
             pdf_buffer,
             as_attachment=True,
-            download_name=f"emissao_co2_{resposta.email.split('@')[0]}_{resposta.data_registro.strftime('%Y-%m-%d')}.pdf",
+            download_name=f"emissao_co2e_{resposta.email.split('@')[0]}_{resposta.data_registro.strftime('%Y-%m-%d')}.pdf",
             mimetype='application/pdf'
         )
     except Exception as e:

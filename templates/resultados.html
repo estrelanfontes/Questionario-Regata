@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ get_translations('Resultados - Emissão de CO2').pt }} | {{ get_translations('Resultados - Emissão de CO2').en }}</title>
+    <title>{{ get_translations('Resultados - Emissão de CO2e').pt }} | {{ get_translations('Resultados - Emissão de CO2e').en }}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <style>
         /* Adicionar estilos para legendas se não existirem no style.css */
@@ -37,8 +37,8 @@
     <div class="container">
         <header>
             <div class="text-block">
-                <h1>{{ get_translations('Resultados da Sua Emissão de CO2').pt }}
-                    <span class="en">{{ get_translations('Resultados da Sua Emissão de CO2').en }}</span>
+                <h1>{{ get_translations('Resultados da Sua Emissão de CO2e').pt }}
+                    <span class="en">{{ get_translations('Resultados da Sua Emissão de CO2e').en }}</span>
                 </h1>
             </div>
             <div class="text-block">
@@ -57,7 +57,7 @@
                 </div>
                 
                 <div class="emissao-card">
-                    <h3>{{ registro.emissao_total|round(2) }} gCO2</h3>
+                    <h3>{{ registro.emissao_total|round(2) }} kgCO2e</h3>
                     <div class="text-block">
                         <p>{{ get_translations('Total de emissões de carbono').pt }}
                             <span class="en">{{ get_translations('Total de emissões de carbono').en }}</span>
@@ -144,15 +144,15 @@
                         </h3>
                     </div>
                     <div class="text-block">
-                        <p>{{ get_translations('Sua emissão de').pt }} {{ registro.emissao_total|round(2) }}g CO2 {{ get_translations('equivale a:').pt }}
-                            <span class="en">{{ get_translations('Sua emissão de').en }} {{ registro.emissao_total|round(2) }}g CO2 {{ get_translations('equivale a:').en }}</span>
+                        <p>{{ get_translations('Sua emissão de').pt }} {{ registro.emissao_total|round(2) }}kgCO2e {{ get_translations('equivale a:').pt }}
+                            <span class="en">{{ get_translations('Sua emissão de').en }} {{ registro.emissao_total|round(2) }}kgCO2e {{ get_translations('equivale a:').en }}</span>
                         </p>
                     </div>
                     
                         
                         <div class="text-block">
-                            {{ (registro.emissao_total / 21000)|round(1) }} {{ get_translations('árvores absorvendo CO2 por um ano').pt }}
-                            <span class="en">{{ (registro.emissao_total / 21000)|round(1) }} {{ get_translations('árvores absorvendo CO2 por um ano').en }}</span>
+                            {{ (registro.emissao_total / 21000)|round(1) }} {{ get_translations('árvores absorvendo gCO2e por um ano').pt }}
+                            <span class="en">{{ (registro.emissao_total / 21000)|round(1) }} {{ get_translations('árvores absorvendo gCO2e por um ano').en }}</span>
                         </div>
                     
                     
@@ -173,7 +173,7 @@
                 </div>
                 
                 <div class="grafico-container">
-                    <img src="data:image/png;base64,{{ grafico_base64 }}" alt="{{ get_translations('Gráficos de emissão de CO2').pt }} | {{ get_translations('Gráficos de emissão de CO2').en }}">
+                    <img src="data:image/png;base64,{{ grafico_base64 }}" alt="{{ get_translations('Gráficos de emissão de CO2e').pt }} | {{ get_translations('Gráficos de emissão de CO2e').en }}">
                 </div>
                 
                 <div class="dica-ecologica">

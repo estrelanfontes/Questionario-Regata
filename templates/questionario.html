@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ get_translations('Questionário - Emissão de CO2').pt }} | {{ get_translations('Questionnaire - CO2 Emissions').en }}</title>
+    <title>{{ get_translations('Questionário - Emissão de CO2e').pt }} | {{ get_translations('Questionnaire - CO2e Emissions').en }}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <div class="container">
         <header>
             <div class="text-block">
-                <h1>{{ get_translations('Questionário de Emissão de CO2').pt }}
-                    <span class="en">{{ get_translations('Questionário de Emissão de CO2').en }}</span>
+                <h1>{{ get_translations('Questionário de Emissão de CO2e').pt }}
+                    <span class="en">{{ get_translations('Questionário de Emissão de CO2e').en }}</span>
                 </h1>
             </div>
             <div class="text-block">
@@ -29,7 +29,7 @@
                     </h2>
                 </div>
                 
-                <!-- NOVO CAMPO: País de origem -->
+                <!-- CAMPO: País de origem -->
                 <div class="form-group">
                     <div class="text-block">
                         <label for="pais_origem">{{ get_translations('País de Origem:').pt }}
@@ -51,36 +51,38 @@
                 </div>
 
 
+                <!-- NOVO: Adicionar este CSS inline -->
+                <style>
+                    .estado-section {
+                        display: block; /* Começa visível */
+                    }
+                    
+                    .estado-section.hidden {
+                        display: none;
+                    }
+                </style>
 
-                <!-- CAMPO ATUALIZADO: Estado de origem -->
-                <div class="form-group">
+                <!-- CAMPO ATUALIZADO: Estado de origem com ID para controle -->
+                <div class="form-group estado-section" id="estado-section">
                     <div class="text-block">
                         <label for="estado_origem">{{ get_translations('Estado de Origem:').pt }}
                             <span class="en">{{ get_translations('Estado de Origem:').en }}</span>
                         </label>
                     </div>
                     <select id="estado_origem" name="estado_origem" required>
-                        <option value="">{{ get_translations('Selecione seu estado de origem').pt }}
+                        <option value="">-- {{ get_translations('Selecione seu estado de origem').pt }}
                             <span class="en">{{ get_translations('Selecione seu estado de origem').en }}</span>
                         </option>
                         {% for estado in estados_brasil %}
-                            {% if estado == "Não se aplica (estrangeiro)" %}
-                                <option value="{{ estado }}" style="font-style: italic; color: #666;">
-                                    {{ estado }}
-                                    <span class="en">{{ get_translations('Não se aplica (estrangeiro)').en }}</span>
-                                </option>
-                            {% else %}
+                            {% if estado != "Não se aplica (estrangeiro)" %}
                                 <option value="{{ estado }}">{{ estado }}</option>
                             {% endif %}
                         {% endfor %}
                     </select>
-                    <div class="text-block">
-                        <small style="color: #666; font-size: 0.9em;">
-                            {{ get_translations("Selecione 'Não se aplica' caso seja de outro país").pt }}
-                            <span class="en">{{ get_translations("Selecione 'Não se aplica' caso seja de outro país").en }}</span>
-                        </small>
-                    </div>
                 </div>
+
+                <!-- NOVO: Campo oculto para valor padrão para estrangeiros -->
+                <input type="hidden" id="estado_default" name="estado_origem" value="Não se aplica (estrangeiro)">
 
                 <div class="form-group">
                     <div class="text-block">
@@ -191,7 +193,7 @@
                     </a>
                     
                     <a href="#" 
-                    onclick="alert('1. Abra Google Maps\n2. Selecione seu trajeto\n3. Escolha um meio de transporte\n4. Multiplique a quilometragem por 2 (ida e volta)\n\n1. Open Google Maps\n2. Select your route\n3. Choose a mode of transportation\n4. Multiply the mileage by 2 (round trip)'); return false;"
+                    onclick="alert('1. Abra Google Maps\n2. Selecione seu trajeto\n3. Escolha um meio de transporte ou utilize a ferramenta medir distância do Google Maps para grandes trajetos\n4. Multiplique a quilometragem por 2 (ida e volta)\n\n1. Open Google Maps\n2. Select your route\n3. Choose a mode of transportation or use the distance measurement tool in Google Maps\n4. Multiply the mileage by 2 (round trip)'); return false;"
                     class="btn-maps-help"
                     style="padding: 8px 15px; background: #f39c12; color: white; text-decoration: none; border-radius: 4px; display: inline-flex; align-items: center; gap: 5px;">
                         <span style="font-size: 1.2em;">❓</span>
@@ -316,6 +318,98 @@
             </div>
         </footer>
     </div>
+
+
+    <script>
+    // Função para atualizar visibilidade do campo estado
+    function atualizarVisibilidadeEstado() {
+        const paisSelect = document.getElementById('pais_origem');
+        const estadoSection = document.getElementById('estado-section');
+        const estadoSelect = document.getElementById('estado_origem');
+        const estadoDefault = document.getElementById('estado_default');
+        
+        const paisSelecionado = paisSelect.value;
+        
+        // Verificar se o país selecionado é Brasil
+        const isBrasil = (paisSelecionado === "Brasil");
+        
+        if (isBrasil) {
+            // Mostrar campo de estado e tornar obrigatório
+            estadoSection.classList.remove('hidden');
+            estadoSelect.required = true;
+            estadoSelect.disabled = false;
+            estadoSelect.value = ""; // Limpar seleção anterior
+            
+            estadoSelect.setAttribute('name', 'estado_origem');
+
+            // Focar no campo se estava vazio
+            if (estadoSelect.value === "") {
+                setTimeout(() => estadoSelect.focus(), 100);
+            }
+        } else {
+            // Esconder campo de estado
+            estadoSection.classList.add('hidden');
+            estadoSelect.required = false;
+            estadoSelect.disabled = true;
+            estadoDefault.value = "Não se aplica (estrangeiro)";
+
+            estadoSelect.removeAttribute('name'); // Remove do formulário
+
+            // Definir valor "Não se aplica" tanto no select quanto no hidden
+            estadoSelect.value = estadoDefault.value; // "Não se aplica (estrangeiro)"
+            
+            // Log para debug
+            console.log(`País: ${paisSelecionado} | Estado definido como: ${estadoDefault.value}`);
+        }
+    }
+
+    function atualizarEstados() {
+    atualizarVisibilidadeEstado(); // Apenas chama a função principal
+}
+
+    // Executar quando a página carregar
+    document.addEventListener('DOMContentLoaded', function() {
+        // Configurar evento no campo país
+        const paisSelect = document.getElementById('pais_origem');
+        if (paisSelect) {
+            paisSelect.addEventListener('change', atualizarVisibilidadeEstado);
+            
+            // Verificar estado inicial
+            atualizarVisibilidadeEstado();
+        }
+        
+        // Modificar o formulário para considerar o campo oculto
+        const form = document.querySelector('.questionario-form');
+            if (form) {
+                form.addEventListener('submit', function(event) {
+                    const paisSelect = document.getElementById('pais_origem');
+                    const estadoSelect = document.getElementById('estado_origem');
+                    const estadoDefault = document.getElementById('estado_default');
+                    
+                    const isBrasil = (paisSelect.value === "Brasil");
+                    
+                    if (!isBrasil) {
+                        // Para estrangeiros: garantir que "Não se aplica (estrangeiro)" seja enviado
+                        // Primeiro, restaurar o campo select para que ele seja enviado
+                        estadoSelect.disabled = false;
+                        estadoSelect.required = false;
+                        estadoSelect.value = estadoDefault.value; // "Não se aplica (estrangeiro)"
+                        
+                        // Log para debug
+                        console.log(`Usuário estrangeiro. Estado enviado: ${estadoDefault.value}`);
+                    }
+                    
+                    // Validação para brasileiros
+                    if (isBrasil && estadoSelect.value === "") {
+                        alert("Por favor, selecione um estado brasileiro.\nPlease select a Brazilian state.");
+                        event.preventDefault();
+                        return false;
+                    }
+                });
+            }
+    });
+    </script>
+
 
 </body>
 </html>
